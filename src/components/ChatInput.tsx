@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Sparkles, ArrowUpCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useMobile } from "@/hooks/use-mobile";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface ChatInputProps {
   onSendMessage: (message: string) => void;
@@ -14,7 +14,7 @@ interface ChatInputProps {
 export default function ChatInput({ onSendMessage, isLoading }: ChatInputProps) {
   const [message, setMessage] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const isMobile = useMobile();
+  const isMobile = useIsMobile();
 
   // Auto-resize the textarea
   useEffect(() => {

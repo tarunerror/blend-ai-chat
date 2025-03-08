@@ -129,7 +129,7 @@ export default function ChatContainer({
   };
 
   return (
-    <div className="flex-1 flex flex-col h-[calc(100vh-4rem)]">
+    <div className="flex-1 flex flex-col h-full w-full">
       <ChatHeader 
         activeSession={activeSession}
         selectedModel={selectedModel}

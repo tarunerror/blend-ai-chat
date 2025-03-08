@@ -89,7 +89,7 @@ const ChatPage = () => {
     <div className="flex flex-col h-screen bg-background">
       <Header onToggleSidebar={handleToggleSidebar} onToggleTheme={toggleTheme} />
       
-      <div className="flex flex-1 overflow-hidden relative">
+      <div className="flex flex-1 overflow-hidden">
         {/* Sidebar backdrop for mobile */}
         {showSidebar && isMobile && (
           <div 
@@ -98,12 +98,12 @@ const ChatPage = () => {
           />
         )}
         
-        {/* Sidebar */}
+        {/* Sidebar wrapper - fixed width on desktop, overlay on mobile */}
         <div 
           className={`
             ${showSidebar ? 'translate-x-0' : '-translate-x-full'} 
-            transition-all duration-300 w-64 h-[calc(100vh-4rem)] 
-            fixed md:relative top-16 z-40 left-0
+            transition-all duration-300 w-64 z-40
+            ${isMobile ? 'fixed left-0 top-16 h-[calc(100vh-4rem)]' : 'relative flex-shrink-0 h-full'}
           `}
         >
           <ChatSidebar
@@ -117,13 +117,7 @@ const ChatPage = () => {
         </div>
         
         {/* Main content */}
-        <main 
-          className={`
-            flex-1 flex overflow-hidden transition-all duration-300
-            ${showSidebar ? 'md:ml-64' : 'ml-0'}
-            w-full
-          `}
-        >
+        <main className="flex-1 flex overflow-hidden w-full">
           {showArticles ? (
             <ArticlesContainer onClose={() => setShowArticles(false)} />
           ) : (
