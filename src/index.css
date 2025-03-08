@@ -101,8 +101,8 @@
 
   /* Premium Scrollbar Styling */
   ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: 4px;
+    height: 4px;
   }
 
   ::-webkit-scrollbar-track {
@@ -139,11 +139,15 @@
   /* Mobile Optimizations */
   @media (max-width: 640px) {
     .mobile-p-reduced {
-      @apply p-2;
+      @apply p-1.5;
     }
     
     .mobile-text-sm {
-      @apply text-sm;
+      @apply text-xs;
+    }
+    
+    .mobile-text-xs {
+      @apply text-[10px];
     }
     
     .mobile-hidden {
@@ -159,7 +163,23 @@
     }
     
     .mobile-mt-2 {
-      @apply mt-2;
+      @apply mt-1.5;
+    }
+    
+    .mobile-icon-sm {
+      @apply h-3.5 w-3.5;
+    }
+    
+    .mobile-min-h-reduced {
+      @apply min-h-[40px];
+    }
+    
+    .mobile-p-1 {
+      @apply p-1;
+    }
+    
+    .mobile-gap-1 {
+      @apply gap-1;
     }
   }
 }

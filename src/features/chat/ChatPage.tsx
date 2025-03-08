@@ -87,8 +87,8 @@ const ChatPage = () => {
     <div className="flex flex-col min-h-screen bg-background">
       <Header onToggleSidebar={handleToggleSidebar} />
       
-      <div className="flex flex-1 overflow-hidden">
-        <div className={`${showSidebar ? 'w-64' : 'w-0'} transition-all duration-300 overflow-hidden h-[calc(100vh-4rem)] absolute md:relative z-10`}>
+      <div className="flex flex-1 overflow-hidden relative">
+        <div className={`${showSidebar ? 'w-64 max-w-full' : 'w-0'} transition-all duration-300 overflow-hidden h-[calc(100vh-4rem)] absolute md:relative z-20`}>
           <ChatSidebar
             sessions={sessions}
             activeSessionId={activeSessionId}

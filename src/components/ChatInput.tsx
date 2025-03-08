@@ -21,7 +21,7 @@ export default function ChatInput({ onSendMessage, isLoading }: ChatInputProps) 
     if (textareaRef.current) {
       textareaRef.current.style.height = "inherit";
       const scrollHeight = textareaRef.current.scrollHeight;
-      textareaRef.current.style.height = `${Math.min(scrollHeight, isMobile ? 100 : 200)}px`;
+      textareaRef.current.style.height = `${Math.min(scrollHeight, isMobile ? 80 : 200)}px`;
     }
   }, [message, isMobile]);
 
@@ -45,8 +45,8 @@ export default function ChatInput({ onSendMessage, isLoading }: ChatInputProps) 
   };
 
   return (
-    <div className="relative glass-card rounded-2xl p-2 sm:p-2 transition-all duration-200">
-      <div className="flex items-end gap-2">
+    <div className="relative glass-card rounded-xl sm:rounded-2xl p-1 sm:p-2 transition-all duration-200">
+      <div className="flex items-end gap-1 sm:gap-2">
         <Textarea
           ref={textareaRef}
           placeholder="Type a message..."
@@ -54,15 +54,15 @@ export default function ChatInput({ onSendMessage, isLoading }: ChatInputProps) 
           onChange={(e) => setMessage(e.target.value)}
           onKeyDown={handleKeyDown}
           className={cn(
-            "min-h-[50px] sm:min-h-[60px] resize-none border-0 bg-transparent p-2 sm:p-3 focus-visible:ring-0 focus-visible:ring-offset-0",
-            "placeholder:text-muted-foreground/50 text-sm sm:text-base"
+            "min-h-[44px] sm:min-h-[60px] resize-none border-0 bg-transparent p-2 sm:p-3 focus-visible:ring-0 focus-visible:ring-offset-0",
+            "placeholder:text-muted-foreground/50 text-sm"
           )}
           disabled={isLoading}
         />
         <Button
           size="icon"
           className={cn(
-            "mb-1 sm:mb-2 mr-1 sm:mr-2 h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-primary text-primary-foreground transition-all", 
+            "mb-1 mr-1 h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-primary text-primary-foreground transition-all", 
             "hover:bg-primary/90",
             isLoading ? "opacity-50 cursor-not-allowed" : "hover-scale"
           )}

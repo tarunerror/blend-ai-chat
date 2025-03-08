@@ -30,20 +30,20 @@ export default function Sidebar({
 
   return (
     <div className="w-full h-full flex flex-col bg-secondary/30 border-r border-border/50">
-      <div className="p-4 flex items-center justify-between">
+      <div className="p-3 sm:p-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <div className="h-6 w-6">
+          <div className="h-5 w-5 sm:h-6 sm:w-6">
             <BlendLogo />
           </div>
-          <h2 className="font-medium">Chats</h2>
+          <h2 className="font-medium text-sm sm:text-base">Chats</h2>
         </div>
         <Button
           variant="ghost"
           size="icon"
           onClick={onNewSession}
-          className="hover-scale text-primary"
+          className="hover-scale text-primary h-8 w-8 sm:h-10 sm:w-10"
         >
-          <MessageSquarePlus className="h-5 w-5" />
+          <MessageSquarePlus className="h-4 w-4 sm:h-5 sm:w-5" />
           <span className="sr-only">New Chat</span>
         </Button>
       </div>
@@ -56,7 +56,7 @@ export default function Sidebar({
             <div
               key={session.id}
               className={cn(
-                "group flex items-center justify-between rounded-md px-3 py-2 text-sm transition-all hover:bg-accent",
+                "group flex items-center justify-between rounded-md px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm transition-all hover:bg-accent",
                 activeSessionId === session.id ? "bg-accent text-accent-foreground" : "text-muted-foreground",
                 "animate-fade-in"
               )}
@@ -64,8 +64,8 @@ export default function Sidebar({
               onMouseEnter={() => setHoveredSessionId(session.id)}
               onMouseLeave={() => setHoveredSessionId(null)}
             >
-              <div className="flex items-center gap-2 overflow-hidden">
-                <div className="h-4 w-4 flex-shrink-0">
+              <div className="flex items-center gap-1.5 sm:gap-2 overflow-hidden">
+                <div className="h-3.5 w-3.5 sm:h-4 sm:w-4 flex-shrink-0">
                   <BlendLogo small />
                 </div>
                 <span className="truncate">{session.title}</span>
@@ -75,13 +75,13 @@ export default function Sidebar({
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="h-6 w-6 text-muted-foreground/70 hover:text-destructive transition-colors"
+                  className="h-5 w-5 sm:h-6 sm:w-6 text-muted-foreground/70 hover:text-destructive transition-colors"
                   onClick={(e) => {
                     e.stopPropagation();
                     onDeleteSession(session.id);
                   }}
                 >
-                  <Trash2 className="h-3.5 w-3.5" />
+                  <Trash2 className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
                   <span className="sr-only">Delete</span>
                 </Button>
               )}
@@ -92,13 +92,13 @@ export default function Sidebar({
       
       <Separator />
       
-      <div className="p-4">
+      <div className="p-3 sm:p-4">
         <Button
           variant="outline"
-          className="w-full justify-start gap-2 text-muted-foreground hover:text-foreground"
+          className="w-full justify-start gap-1.5 sm:gap-2 text-xs sm:text-sm text-muted-foreground hover:text-foreground py-1.5 sm:py-2"
           onClick={onShowArticles}
         >
-          <BookOpen className="h-4 w-4" />
+          <BookOpen className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
           <span>Articles</span>
         </Button>
       </div>

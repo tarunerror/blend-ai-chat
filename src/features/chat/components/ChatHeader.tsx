@@ -24,14 +24,16 @@ export default function ChatHeader({
   const isMobile = useMobile();
 
   return (
-    <div className="p-4 mobile-p-reduced border-b border-border/50">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4">
-        <ModelSelector 
-          selectedModel={selectedModel} 
-          onModelChange={setSelectedModel} 
-        />
+    <div className="p-2 sm:p-4 border-b border-border/50">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+        <div className="w-full sm:w-auto">
+          <ModelSelector 
+            selectedModel={selectedModel} 
+            onModelChange={setSelectedModel} 
+          />
+        </div>
         
-        <div className="flex items-center gap-2 mt-2 sm:mt-0">
+        <div className="flex items-center gap-2 mt-1 sm:mt-0">
           <ExportMenu session={activeSession} />
           
           {activeSession && activeSession.messages.length > 0 && (
@@ -50,7 +52,7 @@ export default function ChatHeader({
                   return session;
                 }));
               }}
-              className="text-xs"
+              className="text-xs h-8"
             >
               Clear
             </Button>
