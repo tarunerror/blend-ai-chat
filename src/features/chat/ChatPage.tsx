@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from "@/components/ui/use-toast";
 import { ChatSession } from "@/types/chat";
 import Header from "@/components/Header";
 import ApiKeyModal from "@/components/ApiKeyModal";
@@ -28,7 +28,7 @@ const ChatPage = () => {
     handleNewSession,
     handleSelectSession,
     handleDeleteSession,
-  } = useChatSessions(toast);
+  } = useChatSessions();
 
   const {
     isLoading,

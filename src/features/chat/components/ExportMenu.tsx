@@ -8,9 +8,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Download, FileText, FilePdf } from "lucide-react";
+import { Download, FileText } from "lucide-react";
 import { exportChatAsText, exportChatAsPDF } from "@/lib/export-utils";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from "@/components/ui/use-toast";
 
 interface ExportMenuProps {
   session: ChatSession | null;
@@ -78,7 +78,7 @@ export default function ExportMenu({ session }: ExportMenuProps) {
           <span>Export as Text</span>
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => handleExport("pdf")}>
-          <FilePdf className="mr-2 h-4 w-4" />
+          <FileText className="mr-2 h-4 w-4" />
           <span>Export as PDF</span>
         </DropdownMenuItem>
       </DropdownMenuContent>

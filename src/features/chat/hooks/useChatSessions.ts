@@ -2,11 +2,12 @@
 import { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { ChatSession } from "@/types/chat";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from "@/components/ui/use-toast";
 
-export function useChatSessions(toast: ReturnType<typeof useToast>) {
+export function useChatSessions() {
   const [sessions, setSessions] = useState<ChatSession[]>([]);
   const [activeSessionId, setActiveSessionId] = useState<string | null>(null);
+  const { toast } = useToast();
 
   // Get active session object
   const activeSession = activeSessionId
