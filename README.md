@@ -1,69 +1,109 @@
-# Welcome to your Lovable project
 
-## Project info
+# Blend AI Chat
 
-**URL**: https://lovable.dev/projects/499d913c-da00-42eb-85f1-4cdce2b77be6
+<p align="center">
+  <img src="https://img.shields.io/badge/status-beta-blue" alt="Status: Beta">
+  <img src="https://img.shields.io/badge/license-MIT-green" alt="License: MIT">
+</p>
 
-## How can I edit this code?
+<p align="center">
+  <b>A sophisticated AI chatbot interface integrating multiple AI models through OpenRouter</b>
+</p>
 
-There are several ways of editing your application.
+## Overview
 
-**Use Lovable**
+Blend AI Chat is a sleek, intuitive interface that lets you interact with the top AI models through a single, unified experience. Inspired by the design principles of Apple, the interface focuses on minimalism, elegance, and user experience.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/499d913c-da00-42eb-85f1-4cdce2b77be6) and start prompting.
+### Key Features
 
-Changes made via Lovable will be committed automatically to this repo.
+✨ **Multiple AI Models**: Access various AI models including Claude, Gemma, Llama, Mistral, and more through OpenRouter  
+🔄 **Seamless Model Switching**: Switch between models with a simple dropdown selection  
+💬 **Elegant Chat Interface**: Beautiful, responsive design with smooth animations  
+📱 **Fully Responsive**: Works on all devices from mobile to desktop  
+🔐 **Privacy-Focused**: Your API key is stored only in your browser  
+📋 **Message History**: Conversations are saved locally for future reference  
 
-**Use your preferred IDE**
+## Getting Started
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### Prerequisites
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+- OpenRouter API key ([Get one here](https://openrouter.ai/keys))
+- Modern web browser
 
-Follow these steps:
+### Installation
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/your-username/blend-ai-chat.git
+   cd blend-ai-chat
+   ```
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+2. Install the dependencies:
+   ```bash
+   npm install
+   ```
 
-# Step 3: Install the necessary dependencies.
-npm i
+3. Start the development server:
+   ```bash
+   npm run dev
+   ```
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+4. Open your browser and navigate to `http://localhost:8080`
 
-**Edit a file directly in GitHub**
+5. Enter your OpenRouter API key when prompted
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Usage
 
-**Use GitHub Codespaces**
+1. **Select a model**: Choose from the dropdown menu at the top of the interface
+2. **Send a message**: Type your message in the input field and press Enter or click the send button
+3. **View responses**: AI responses will appear in the chat window with information about which model generated them
+4. **Copy responses**: Click the "Copy" button under any AI response to copy it to your clipboard
+5. **Clear history**: Click "Clear Chat" to remove all messages from the current session
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Supported Models
 
-## What technologies are used for this project?
+Blend AI Chat currently integrates with the following models via OpenRouter:
 
-This project is built with .
+- **Claude 3 Haiku** (Anthropic)
+- **Gemma 7B** (Google)
+- **Llama 3 8B** (Meta)
+- **Mistral 7B** (Mistral AI)
+- **MythoMax L2 13B** (Gryphe)
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## Technical Architecture
 
-## How can I deploy this project?
+Blend AI Chat is built with:
 
-Simply open [Lovable](https://lovable.dev/projects/499d913c-da00-42eb-85f1-4cdce2b77be6) and click on Share -> Publish.
+- **React**: Front-end UI library
+- **TypeScript**: Type-safe JavaScript
+- **TailwindCSS**: Utility-first CSS framework
+- **OpenRouter API**: Gateway to multiple AI models
 
-## I want to use a custom domain - is that possible?
+## Customization
 
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+You can customize Blend AI Chat by modifying:
+
+- **`tailwind.config.ts`**: Adjust color schemes, animations, and other design tokens
+- **`src/lib/openrouter.ts`**: Add or modify available AI models
+- **`src/components/`**: Customize individual UI components
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+Before contributing, please read our [Contributing Guidelines](CONTRIBUTING.md).
+
+## Acknowledgements
+
+- [OpenRouter](https://openrouter.ai/) for providing access to multiple AI models
+- The creators of the various AI models integrated in this application
+
+---
+
+<p align="center">
+  Made with ❤️ by your name
+</p>
