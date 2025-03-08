@@ -1,6 +1,5 @@
 
 import { useState } from "react";
-import { v4 as uuidv4 } from "uuid";
 import { MessageSquarePlus, Trash2, BookOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -29,7 +28,7 @@ export default function Sidebar({
   const [hoveredSessionId, setHoveredSessionId] = useState<string | null>(null);
 
   return (
-    <div className="w-full h-full flex flex-col bg-secondary/30 border-r border-border/50">
+    <div className="w-full h-full flex flex-col bg-secondary/30 border-r border-border/50 shadow-lg">
       <div className="p-3 sm:p-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <div className="h-5 w-5 sm:h-6 sm:w-6">
@@ -58,7 +57,7 @@ export default function Sidebar({
               className={cn(
                 "group flex items-center justify-between rounded-md px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm transition-all hover:bg-accent",
                 activeSessionId === session.id ? "bg-accent text-accent-foreground" : "text-muted-foreground",
-                "animate-fade-in"
+                "animate-fade-in cursor-pointer"
               )}
               onClick={() => onSelectSession(session.id)}
               onMouseEnter={() => setHoveredSessionId(session.id)}

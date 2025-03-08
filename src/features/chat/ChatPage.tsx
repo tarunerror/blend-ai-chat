@@ -12,6 +12,7 @@ import ChatContainer from "./components/ChatContainer";
 import ChatSidebar from "./components/ChatSidebar";
 import ArticlesContainer from "./components/ArticlesContainer";
 import { useMobile } from "@/hooks/use-mobile";
+import { useTheme } from "./hooks/useTheme";
 
 const ChatPage = () => {
   const [selectedModel, setSelectedModel] = useState(DEFAULT_MODEL.id);
@@ -20,6 +21,7 @@ const ChatPage = () => {
   const [showArticles, setShowArticles] = useState(false);
   const { toast } = useToast();
   const isMobile = useMobile();
+  const { theme, toggleTheme } = useTheme();
 
   // Auto-hide sidebar on mobile
   useEffect(() => {
@@ -85,10 +87,19 @@ const ChatPage = () => {
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
-      <Header onToggleSidebar={handleToggleSidebar} />
+      <Header onToggleSidebar={handleToggleSidebar} onToggleTheme={toggleTheme} />
       
       <div className="flex flex-1 overflow-hidden relative">
-        <div className={`${showSidebar ? 'w-64 max-w-full' : 'w-0'} transition-all duration-300 overflow-hidden h-[calc(100vh-4rem)] absolute md:relative z-20`}>
+        {/* Sidebar with better positioning and backdrop */}
+        {showSidebar && (
+          <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-10 md:hidden" 
+               onClick={() => setShowSidebar(false)}></div>
+        )}
+        <div className={`
+          ${showSidebar ? 'translate-x-0' : '-translate-x-full md:w-0'} 
+          transition-all duration-300 w-64 max-w-[80%] h-[calc(100vh-4rem)] 
+          fixed md:relative z-20 md:translate-x-0
+        `}>
           <ChatSidebar
             sessions={sessions}
             activeSessionId={activeSessionId}
@@ -99,7 +110,7 @@ const ChatPage = () => {
           />
         </div>
         
-        <main className="flex-1 flex overflow-hidden">
+        <main className="flex-1 flex overflow-hidden md:ml-0 w-full">
           {showArticles ? (
             <ArticlesContainer onClose={() => setShowArticles(false)} />
           ) : (
