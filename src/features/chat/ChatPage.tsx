@@ -98,7 +98,7 @@ const ChatPage = () => {
           />
         )}
         
-        {/* Sidebar wrapper */}
+        {/* Sidebar wrapper - fixed width on desktop, overlay on mobile */}
         <div 
           className={`
             ${showSidebar ? 'translate-x-0' : '-translate-x-full'} 
@@ -116,13 +116,8 @@ const ChatPage = () => {
           />
         </div>
         
-        {/* Main content - adjusts width based on sidebar state */}
-        <main 
-          className={`
-            flex-1 flex overflow-hidden transition-all duration-300
-            ${showSidebar && !isMobile ? 'ml-0' : 'ml-0 w-full'}
-          `}
-        >
+        {/* Main content */}
+        <main className="flex-1 flex overflow-hidden w-full">
           {showArticles ? (
             <ArticlesContainer onClose={() => setShowArticles(false)} />
           ) : (
@@ -139,7 +134,6 @@ const ChatPage = () => {
               setIsThinking={setIsThinking}
               thinkingText={thinkingText}
               simulateThinking={simulateThinking}
-              sidebarVisible={showSidebar && !isMobile}
             />
           )}
         </main>

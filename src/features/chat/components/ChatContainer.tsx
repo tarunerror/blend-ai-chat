@@ -22,7 +22,6 @@ interface ChatContainerProps {
   setIsThinking: Dispatch<SetStateAction<boolean>>;
   thinkingText: string;
   simulateThinking: (prompt: string) => Promise<() => Promise<void>>;
-  sidebarVisible?: boolean;
 }
 
 export default function ChatContainer({
@@ -37,8 +36,7 @@ export default function ChatContainer({
   isThinking,
   setIsThinking,
   thinkingText,
-  simulateThinking,
-  sidebarVisible = true
+  simulateThinking
 }: ChatContainerProps) {
   const { toast } = useToast();
 
@@ -131,7 +129,7 @@ export default function ChatContainer({
   };
 
   return (
-    <div className={`flex-1 flex flex-col h-full w-full transition-all duration-300 ${sidebarVisible ? 'max-w-[calc(100%-16rem)]' : 'max-w-full'}`}>
+    <div className="flex-1 flex flex-col h-full w-full">
       <ChatHeader 
         activeSession={activeSession}
         selectedModel={selectedModel}
