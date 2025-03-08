@@ -16,6 +16,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Info } from "lucide-react";
+import { useMobile } from "@/hooks/use-mobile";
 
 interface ModelSelectorProps {
   selectedModel: string;
@@ -24,13 +25,14 @@ interface ModelSelectorProps {
 
 export default function ModelSelector({ selectedModel, onModelChange }: ModelSelectorProps) {
   const [hoveredModel, setHoveredModel] = useState<string | null>(null);
+  const isMobile = useMobile();
   
   const currentModel = AVAILABLE_MODELS.find(model => model.id === selectedModel) || DEFAULT_MODEL;
   
   return (
-    <div className="w-full max-w-[240px] relative">
+    <div className="w-full sm:max-w-[240px] relative">
       <Select value={selectedModel} onValueChange={onModelChange}>
-        <SelectTrigger className="w-full bg-background border-border/50 focus:ring-primary/20">
+        <SelectTrigger className="w-full bg-background border-border/50 focus:ring-primary/20 text-sm">
           <SelectValue placeholder="Select a model" />
         </SelectTrigger>
         <SelectContent className="glass-card">
@@ -39,7 +41,7 @@ export default function ModelSelector({ selectedModel, onModelChange }: ModelSel
               <SelectItem
                 key={model.id}
                 value={model.id}
-                className="flex flex-col items-start"
+                className="flex flex-col items-start text-sm"
                 onMouseEnter={() => setHoveredModel(model.id)}
                 onMouseLeave={() => setHoveredModel(null)}
               >
@@ -56,7 +58,7 @@ export default function ModelSelector({ selectedModel, onModelChange }: ModelSel
       </Select>
       
       <div className="mt-1 text-xs text-muted-foreground flex items-center gap-1">
-        <span>{currentModel.provider}</span>
+        <span>{isMobile ? currentModel.name.split(' ')[0] : currentModel.provider}</span>
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>

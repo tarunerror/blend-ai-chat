@@ -135,4 +135,31 @@
   .hover-scale {
     @apply transition-transform duration-200 hover:scale-[1.02];
   }
+  
+  /* Mobile Optimizations */
+  @media (max-width: 640px) {
+    .mobile-p-reduced {
+      @apply p-2;
+    }
+    
+    .mobile-text-sm {
+      @apply text-sm;
+    }
+    
+    .mobile-hidden {
+      @apply hidden;
+    }
+    
+    .mobile-flex-col {
+      @apply flex-col;
+    }
+    
+    .mobile-w-full {
+      @apply w-full;
+    }
+    
+    .mobile-mt-2 {
+      @apply mt-2;
+    }
+  }
 }

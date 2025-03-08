@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import ModelSelector from "@/components/ModelSelector";
 import { ChatSession } from "@/types/chat";
 import ExportMenu from "./ExportMenu";
+import { useMobile } from '@/hooks/use-mobile';
 
 interface ChatHeaderProps {
   activeSession: ChatSession | null;
@@ -20,21 +21,23 @@ export default function ChatHeader({
   activeSessionId,
   setSessions
 }: ChatHeaderProps) {
+  const isMobile = useMobile();
+
   return (
-    <div className="p-4 border-b border-border/50">
-      <div className="flex flex-wrap items-center justify-between gap-4">
+    <div className="p-4 mobile-p-reduced border-b border-border/50">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4">
         <ModelSelector 
           selectedModel={selectedModel} 
           onModelChange={setSelectedModel} 
         />
         
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 mt-2 sm:mt-0">
           <ExportMenu session={activeSession} />
           
           {activeSession && activeSession.messages.length > 0 && (
             <Button
               variant="ghost"
-              size="sm"
+              size={isMobile ? "sm" : "sm"}
               onClick={() => {
                 setSessions(prev => prev.map(session => {
                   if (session.id === activeSessionId) {
@@ -49,7 +52,7 @@ export default function ChatHeader({
               }}
               className="text-xs"
             >
-              Clear Messages
+              Clear
             </Button>
           )}
         </div>

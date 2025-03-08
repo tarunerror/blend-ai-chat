@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Sparkles, ArrowUpCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useMobile } from "@/hooks/use-mobile";
 
 interface ChatInputProps {
   onSendMessage: (message: string) => void;
@@ -13,15 +14,16 @@ interface ChatInputProps {
 export default function ChatInput({ onSendMessage, isLoading }: ChatInputProps) {
   const [message, setMessage] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const isMobile = useMobile();
 
   // Auto-resize the textarea
   useEffect(() => {
     if (textareaRef.current) {
       textareaRef.current.style.height = "inherit";
       const scrollHeight = textareaRef.current.scrollHeight;
-      textareaRef.current.style.height = `${Math.min(scrollHeight, 200)}px`;
+      textareaRef.current.style.height = `${Math.min(scrollHeight, isMobile ? 100 : 200)}px`;
     }
-  }, [message]);
+  }, [message, isMobile]);
 
   const handleSendMessage = () => {
     if (message.trim() && !isLoading) {
@@ -43,7 +45,7 @@ export default function ChatInput({ onSendMessage, isLoading }: ChatInputProps) 
   };
 
   return (
-    <div className="relative glass-card rounded-2xl p-2 transition-all duration-200">
+    <div className="relative glass-card rounded-2xl p-2 sm:p-2 transition-all duration-200">
       <div className="flex items-end gap-2">
         <Textarea
           ref={textareaRef}
@@ -52,15 +54,15 @@ export default function ChatInput({ onSendMessage, isLoading }: ChatInputProps) 
           onChange={(e) => setMessage(e.target.value)}
           onKeyDown={handleKeyDown}
           className={cn(
-            "min-h-[60px] resize-none border-0 bg-transparent p-3 focus-visible:ring-0 focus-visible:ring-offset-0",
-            "placeholder:text-muted-foreground/50"
+            "min-h-[50px] sm:min-h-[60px] resize-none border-0 bg-transparent p-2 sm:p-3 focus-visible:ring-0 focus-visible:ring-offset-0",
+            "placeholder:text-muted-foreground/50 text-sm sm:text-base"
           )}
           disabled={isLoading}
         />
         <Button
           size="icon"
           className={cn(
-            "mb-2 mr-2 h-10 w-10 rounded-full bg-primary text-primary-foreground transition-all", 
+            "mb-1 sm:mb-2 mr-1 sm:mr-2 h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-primary text-primary-foreground transition-all", 
             "hover:bg-primary/90",
             isLoading ? "opacity-50 cursor-not-allowed" : "hover-scale"
           )}
@@ -68,9 +70,9 @@ export default function ChatInput({ onSendMessage, isLoading }: ChatInputProps) 
           disabled={!message.trim() || isLoading}
         >
           {isLoading ? (
-            <Sparkles className="h-5 w-5 animate-pulse" />
+            <Sparkles className="h-4 w-4 sm:h-5 sm:w-5 animate-pulse" />
           ) : (
-            <ArrowUpCircle className="h-5 w-5" />
+            <ArrowUpCircle className="h-4 w-4 sm:h-5 sm:w-5" />
           )}
           <span className="sr-only">Send message</span>
         </Button>

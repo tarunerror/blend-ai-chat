@@ -11,6 +11,7 @@ import { useThinking } from "./hooks/useThinking";
 import ChatContainer from "./components/ChatContainer";
 import ChatSidebar from "./components/ChatSidebar";
 import ArticlesContainer from "./components/ArticlesContainer";
+import { useMobile } from "@/hooks/use-mobile";
 
 const ChatPage = () => {
   const [selectedModel, setSelectedModel] = useState(DEFAULT_MODEL.id);
@@ -18,6 +19,16 @@ const ChatPage = () => {
   const [showSidebar, setShowSidebar] = useState(true);
   const [showArticles, setShowArticles] = useState(false);
   const { toast } = useToast();
+  const isMobile = useMobile();
+
+  // Auto-hide sidebar on mobile
+  useEffect(() => {
+    if (isMobile) {
+      setShowSidebar(false);
+    } else {
+      setShowSidebar(true);
+    }
+  }, [isMobile]);
 
   const {
     sessions,
@@ -65,17 +76,24 @@ const ChatPage = () => {
     setShowArticles(true);
   };
 
+  const handleSelectSessionAndCloseSidebar = (sessionId: string) => {
+    handleSelectSession(sessionId);
+    if (isMobile) {
+      setShowSidebar(false);
+    }
+  };
+
   return (
     <div className="flex flex-col min-h-screen bg-background">
       <Header onToggleSidebar={handleToggleSidebar} />
       
       <div className="flex flex-1 overflow-hidden">
-        <div className={`${showSidebar ? 'w-64' : 'w-0'} transition-all duration-300 md:w-64 overflow-hidden h-[calc(100vh-4rem)]`}>
+        <div className={`${showSidebar ? 'w-64' : 'w-0'} transition-all duration-300 overflow-hidden h-[calc(100vh-4rem)] absolute md:relative z-10`}>
           <ChatSidebar
             sessions={sessions}
             activeSessionId={activeSessionId}
             onNewSession={handleNewSession}
-            onSelectSession={handleSelectSession}
+            onSelectSession={handleSelectSessionAndCloseSidebar}
             onDeleteSession={handleDeleteSession}
             onShowArticles={handleShowArticles}
           />
