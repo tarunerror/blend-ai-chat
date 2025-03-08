@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { useToast } from "@/hooks/use-toast";
@@ -13,7 +12,7 @@ import Sidebar from "@/components/Sidebar";
 import Articles from "@/components/Articles";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { RefreshCw } from "lucide-react";
+import { RefreshCw, Brain } from "lucide-react";
 
 const Index = () => {
   const [sessions, setSessions] = useState<ChatSession[]>([]);
@@ -24,13 +23,14 @@ const Index = () => {
   const [showApiKeyModal, setShowApiKeyModal] = useState(false);
   const [showSidebar, setShowSidebar] = useState(true);
   const [showArticles, setShowArticles] = useState(false);
+  const [isThinking, setIsThinking] = useState(false);
+  const [thinkingText, setThinkingText] = useState("");
   const { toast } = useToast();
 
   const activeSession = activeSessionId 
     ? sessions.find(session => session.id === activeSessionId) 
     : null;
   
-  // Load API key and sessions from localStorage
   useEffect(() => {
     const storedApiKey = localStorage.getItem("openrouter-api-key");
     if (storedApiKey) {
@@ -55,12 +55,10 @@ const Index = () => {
         console.error("Failed to parse stored sessions:", error);
       }
     } else {
-      // Create a new session if none exist
       handleNewSession();
     }
   }, []);
 
-  // Save sessions to localStorage whenever they change
   useEffect(() => {
     if (sessions.length > 0) {
       localStorage.setItem("chat-sessions", JSON.stringify(sessions));
@@ -114,6 +112,54 @@ const Index = () => {
     });
   };
 
+  const simulateThinking = async (prompt: string) => {
+    setIsThinking(true);
+    setThinkingText("");
+    
+    const generateThinkingPoints = (userPrompt: string) => {
+      const thinkingPoints = [
+        "Analyzing context and user intent...",
+        `Researching information about "${userPrompt.substring(0, 20)}${userPrompt.length > 20 ? '...' : ''}"`,
+        "Evaluating relevant knowledge and sources...",
+        "Determining the most accurate response...",
+        "Formulating a comprehensive answer..."
+      ];
+      
+      if (userPrompt.toLowerCase().includes("code") || userPrompt.toLowerCase().includes("program")) {
+        thinkingPoints.splice(2, 0, "Checking code syntax and best practices...");
+      }
+      if (userPrompt.toLowerCase().includes("history") || userPrompt.toLowerCase().includes("when")) {
+        thinkingPoints.splice(2, 0, "Reviewing historical timeline and events...");
+      }
+      if (userPrompt.toLowerCase().includes("math") || userPrompt.toLowerCase().includes("calculate")) {
+        thinkingPoints.splice(2, 0, "Performing mathematical calculations...");
+      }
+      
+      return thinkingPoints;
+    };
+    
+    const thinkingPoints = generateThinkingPoints(prompt);
+    
+    for (const point of thinkingPoints) {
+      setThinkingText("");
+      for (let i = 0; i < point.length; i++) {
+        await new Promise(resolve => setTimeout(resolve, 20 + Math.random() * 30));
+        setThinkingText(prev => prev + point.charAt(i));
+      }
+      await new Promise(resolve => setTimeout(resolve, 400));
+    }
+    
+    const minimumThinkingTime = 1500;
+    const startTime = Date.now();
+    return () => {
+      const elapsedTime = Date.now() - startTime;
+      if (elapsedTime < minimumThinkingTime) {
+        return new Promise(resolve => setTimeout(resolve, minimumThinkingTime - elapsedTime));
+      }
+      return Promise.resolve();
+    };
+  };
+
   const handleSendMessage = async (content: string) => {
     if (!apiKey) {
       setShowApiKeyModal(true);
@@ -125,7 +171,6 @@ const Index = () => {
       return;
     }
 
-    // Create a new user message
     const userMessage: ChatMessageType = {
       id: uuidv4(),
       role: "user",
@@ -133,10 +178,15 @@ const Index = () => {
       timestamp: Date.now(),
     };
 
-    // Update session with new message
+    const thinkingMessage: ChatMessageType = {
+      id: uuidv4(),
+      role: "assistant",
+      content: thinkingText,
+      timestamp: Date.now(),
+    };
+
     setSessions(prev => prev.map(session => {
       if (session.id === activeSessionId) {
-        // Update session title based on first message if it's still the default
         let updatedTitle = session.title;
         if (session.messages.length === 0) {
           updatedTitle = content.length > 30 
@@ -155,19 +205,25 @@ const Index = () => {
     }));
     
     setIsLoading(true);
-
+    
     try {
-      // Find the active session to get its messages
-      const currentSession = sessions.find(session => session.id === activeSessionId);
-      if (!currentSession) return;
+      const finishThinking = await simulateThinking(content);
       
-      // Combine previous messages with the new one, but only recent ones for context
+      const currentSession = sessions.find(session => session.id === activeSessionId);
+      if (!currentSession) {
+        await finishThinking();
+        setIsThinking(false);
+        setIsLoading(false);
+        return;
+      }
+      
       const recentMessages = [...currentSession.messages.slice(-10), userMessage];
       
-      // Send the message to the API
+      await finishThinking();
+      setIsThinking(false);
+      
       const response = await sendChatRequest(recentMessages, apiKey, selectedModel);
 
-      // Create assistant message from response
       const assistantMessage: ChatMessageType = {
         id: uuidv4(),
         role: "assistant",
@@ -176,7 +232,6 @@ const Index = () => {
         timestamp: Date.now(),
       };
 
-      // Update session with assistant message
       setSessions(prev => prev.map(session => {
         if (session.id === activeSessionId) {
           return {
@@ -189,6 +244,7 @@ const Index = () => {
       }));
     } catch (error) {
       console.error("Error sending message:", error);
+      setIsThinking(false);
       toast({
         title: "Error",
         description: error instanceof Error ? error.message : "Failed to get response",
@@ -227,7 +283,6 @@ const Index = () => {
       <Header onToggleSidebar={handleToggleSidebar} />
       
       <div className="flex flex-1 overflow-hidden">
-        {/* Sidebar */}
         <div className={`${showSidebar ? 'w-64' : 'w-0'} transition-all duration-300 md:w-64 overflow-hidden h-[calc(100vh-4rem)]`}>
           <Sidebar
             sessions={sessions}
@@ -239,7 +294,6 @@ const Index = () => {
           />
         </div>
         
-        {/* Main Content */}
         <main className="flex-1 flex overflow-hidden">
           {showArticles ? (
             <div className="flex-1 p-4 overflow-hidden">
@@ -269,7 +323,6 @@ const Index = () => {
                         variant="ghost"
                         size="sm"
                         onClick={() => {
-                          // Clear messages for the active session
                           setSessions(prev => prev.map(session => {
                             if (session.id === activeSessionId) {
                               return {
@@ -295,12 +348,34 @@ const Index = () => {
                   {activeSession && activeSession.messages.length === 0 ? (
                     <div className="flex flex-col items-center justify-center h-[50vh] text-center p-8 animate-fade-in">
                       <div className="rounded-full bg-primary/10 p-3 mb-4">
-                        <RefreshCw className="h-6 w-6 text-primary" />
+                        <Brain className="h-8 w-8 text-primary" />
                       </div>
-                      <h2 className="text-xl font-semibold mb-2">Start a new conversation</h2>
+                      <h2 className="text-xl font-semibold mb-2">Start a conversation with AI</h2>
                       <p className="text-muted-foreground max-w-md">
-                        Get started by sending a message. You can switch between different AI models using the selector above.
+                        Ask questions, get creative responses, or discuss complex topics. This AI can help with coding problems, explain concepts, or just chat.
                       </p>
+                      <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <Button 
+                          variant="outline" 
+                          className="text-sm" 
+                          onClick={() => {
+                            const content = "Can you explain how neural networks work in simple terms?";
+                            handleSendMessage(content);
+                          }}
+                        >
+                          "Explain neural networks"
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          className="text-sm" 
+                          onClick={() => {
+                            const content = "What are the best practices for writing clean React components?";
+                            handleSendMessage(content);
+                          }}
+                        >
+                          "React best practices"
+                        </Button>
+                      </div>
                     </div>
                   ) : (
                     activeSession?.messages.map((msg, i) => (
@@ -312,7 +387,20 @@ const Index = () => {
                     ))
                   )}
                   
-                  {isLoading && (
+                  {isThinking && (
+                    <ChatMessage
+                      message={{
+                        id: "thinking",
+                        role: "assistant",
+                        content: thinkingText,
+                        timestamp: Date.now(),
+                      }}
+                      isLast={true}
+                      isThinking={true}
+                    />
+                  )}
+                  
+                  {isLoading && !isThinking && (
                     <div className="flex items-center gap-4 max-w-4xl mx-auto py-6 animate-fade-in">
                       <div className="flex-shrink-0 mt-0.5">
                         <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary">

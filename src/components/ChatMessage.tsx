@@ -2,15 +2,16 @@
 import { useState, useRef, useEffect } from "react";
 import { ChatMessage as ChatMessageType } from "@/types/chat";
 import { cn } from "@/lib/utils";
-import { CheckIcon, CopyIcon, UserIcon } from "lucide-react";
+import { CheckIcon, CopyIcon, UserIcon, Brain } from "lucide-react";
 import { AVAILABLE_MODELS } from "@/lib/openrouter";
 
 interface ChatMessageProps {
   message: ChatMessageType;
   isLast?: boolean;
+  isThinking?: boolean;
 }
 
-export default function ChatMessage({ message, isLast = false }: ChatMessageProps) {
+export default function ChatMessage({ message, isLast = false, isThinking = false }: ChatMessageProps) {
   const [copied, setCopied] = useState(false);
   const messageRef = useRef<HTMLDivElement>(null);
   const modelInfo = message.model ? AVAILABLE_MODELS.find(m => m.id === message.model) : null;
@@ -61,13 +62,28 @@ export default function ChatMessage({ message, isLast = false }: ChatMessageProp
             )}
           </div>
           
-          <div className="prose prose-neutral dark:prose-invert max-w-none">
-            <p className="text-balance whitespace-pre-wrap">
-              {message.content}
-            </p>
-          </div>
+          {isThinking ? (
+            <div className="prose prose-neutral dark:prose-invert max-w-none">
+              <div className="flex items-start">
+                <div className="p-3 bg-secondary/50 rounded-lg animate-pulse mr-3">
+                  <Brain className="h-4 w-4 text-primary" />
+                </div>
+                <div className="space-y-3 w-full">
+                  <div className="thinking-line h-4 bg-secondary/50 rounded w-3/4 animate-pulse"></div>
+                  <div className="thinking-line h-4 bg-secondary/40 rounded w-2/3 animate-pulse" style={{ animationDelay: "0.2s" }}></div>
+                  <div className="thinking-line h-4 bg-secondary/30 rounded w-1/2 animate-pulse" style={{ animationDelay: "0.4s" }}></div>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="prose prose-neutral dark:prose-invert max-w-none">
+              <p className="text-balance whitespace-pre-wrap">
+                {message.content}
+              </p>
+            </div>
+          )}
           
-          {message.role === "assistant" && (
+          {message.role === "assistant" && !isThinking && (
             <div className="flex justify-start pt-2">
               <button
                 onClick={copyToClipboard}
