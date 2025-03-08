@@ -22,6 +22,8 @@ interface ChatContainerProps {
   setIsThinking: Dispatch<SetStateAction<boolean>>;
   thinkingText: string;
   simulateThinking: (prompt: string) => Promise<() => Promise<void>>;
+  showSidebar?: boolean;
+  isMobile?: boolean;
 }
 
 export default function ChatContainer({
@@ -36,7 +38,9 @@ export default function ChatContainer({
   isThinking,
   setIsThinking,
   thinkingText,
-  simulateThinking
+  simulateThinking,
+  showSidebar = true,
+  isMobile = false
 }: ChatContainerProps) {
   const { toast } = useToast();
 
@@ -129,17 +133,25 @@ export default function ChatContainer({
   };
 
   return (
-    <div className="flex-1 flex flex-col h-full w-full">
+    <div className={`
+      flex-1 flex flex-col h-full w-full transition-all duration-300
+      ${!isMobile && !showSidebar ? 'max-w-[calc(100vw)]' : ''}
+    `}>
       <ChatHeader 
         activeSession={activeSession}
         selectedModel={selectedModel}
         setSelectedModel={setSelectedModel}
         activeSessionId={activeSessionId} 
         setSessions={setSessions}
+        showSidebar={showSidebar}
+        isMobile={isMobile}
       />
       
       <div className="flex-1 overflow-y-auto">
-        <div className="max-w-4xl mx-auto px-4 py-6 space-y-6">
+        <div className={`
+          mx-auto px-4 py-6 space-y-6 transition-all duration-300
+          ${!showSidebar && !isMobile ? 'max-w-6xl' : 'max-w-4xl'}
+        `}>
           {activeSession && activeSession.messages.length === 0 ? (
             <EmptyState onSendMessage={handleSendMessage} />
           ) : (
@@ -154,7 +166,10 @@ export default function ChatContainer({
       </div>
       
       <div className="p-4 border-t border-border/50 bg-gradient-to-t from-background via-background to-background/0">
-        <div className="max-w-4xl mx-auto">
+        <div className={`
+          mx-auto transition-all duration-300
+          ${!showSidebar && !isMobile ? 'max-w-6xl' : 'max-w-4xl'}
+        `}>
           <ChatInput onSendMessage={handleSendMessage} isLoading={isLoading} />
         </div>
       </div>

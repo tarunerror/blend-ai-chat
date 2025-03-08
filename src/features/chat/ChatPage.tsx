@@ -89,7 +89,7 @@ const ChatPage = () => {
     <div className="flex flex-col h-screen bg-background">
       <Header onToggleSidebar={handleToggleSidebar} onToggleTheme={toggleTheme} />
       
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex flex-1 overflow-hidden relative">
         {/* Sidebar backdrop for mobile */}
         {showSidebar && isMobile && (
           <div 
@@ -98,12 +98,12 @@ const ChatPage = () => {
           />
         )}
         
-        {/* Sidebar wrapper - fixed width on desktop, overlay on mobile */}
+        {/* Sidebar */}
         <div 
           className={`
-            ${showSidebar ? 'translate-x-0' : '-translate-x-full'} 
             transition-all duration-300 w-64 z-40
-            ${isMobile ? 'fixed left-0 top-16 h-[calc(100vh-4rem)]' : 'relative flex-shrink-0 h-full'}
+            ${showSidebar ? 'translate-x-0' : '-translate-x-full'} 
+            ${isMobile ? 'fixed left-0 top-16 h-[calc(100vh-4rem)]' : 'relative h-full'}
           `}
         >
           <ChatSidebar
@@ -116,8 +116,14 @@ const ChatPage = () => {
           />
         </div>
         
-        {/* Main content */}
-        <main className="flex-1 flex overflow-hidden w-full">
+        {/* Main content - adjust left transition based on sidebar state */}
+        <main 
+          className={`
+            flex-1 flex overflow-hidden w-full transition-all duration-300
+            ${!isMobile && showSidebar ? 'ml-0' : (isMobile ? 'ml-0' : 'ml-[-64px]')}
+          `}
+          style={{ width: '100%' }}
+        >
           {showArticles ? (
             <ArticlesContainer onClose={() => setShowArticles(false)} />
           ) : (
@@ -134,6 +140,8 @@ const ChatPage = () => {
               setIsThinking={setIsThinking}
               thinkingText={thinkingText}
               simulateThinking={simulateThinking}
+              showSidebar={showSidebar}
+              isMobile={isMobile}
             />
           )}
         </main>

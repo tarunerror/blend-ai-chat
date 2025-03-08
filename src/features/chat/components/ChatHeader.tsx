@@ -12,6 +12,8 @@ interface ChatHeaderProps {
   setSelectedModel: (modelId: string) => void;
   activeSessionId: string | null;
   setSessions: Dispatch<SetStateAction<ChatSession[]>>;
+  showSidebar?: boolean;
+  isMobile?: boolean;
 }
 
 export default function ChatHeader({
@@ -19,14 +21,17 @@ export default function ChatHeader({
   selectedModel,
   setSelectedModel,
   activeSessionId,
-  setSessions
+  setSessions,
+  showSidebar = true,
+  isMobile = false
 }: ChatHeaderProps) {
-  const isMobile = useIsMobile();
+  const isMobileHook = useIsMobile();
+  const effectiveIsMobile = isMobile || isMobileHook;
 
   return (
     <div className="p-2 sm:p-4 border-b border-border/50">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-        <div className="w-full sm:w-auto">
+        <div className={`transition-all duration-300 ${!showSidebar && !effectiveIsMobile ? 'w-auto' : 'w-full sm:w-auto'}`}>
           <ModelSelector 
             selectedModel={selectedModel} 
             onModelChange={setSelectedModel} 
@@ -39,7 +44,7 @@ export default function ChatHeader({
           {activeSession && activeSession.messages.length > 0 && (
             <Button
               variant="ghost"
-              size={isMobile ? "sm" : "sm"}
+              size={effectiveIsMobile ? "sm" : "sm"}
               onClick={() => {
                 setSessions(prev => prev.map(session => {
                   if (session.id === activeSessionId) {
