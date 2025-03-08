@@ -92,16 +92,18 @@ const ChatPage = () => {
       <div className="flex flex-1 overflow-hidden relative">
         {/* Sidebar backdrop for mobile */}
         {showSidebar && isMobile && (
-          <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-30" 
-               onClick={() => setShowSidebar(false)}></div>
+          <div 
+            className="fixed inset-0 bg-background/80 backdrop-blur-sm z-30" 
+            onClick={() => setShowSidebar(false)}
+          />
         )}
         
-        {/* Sidebar with proper positioning */}
+        {/* Sidebar */}
         <div 
           className={`
-            ${showSidebar ? 'translate-x-0' : '-translate-x-full md:-translate-x-full md:w-0'} 
+            ${showSidebar ? 'translate-x-0' : '-translate-x-full'} 
             transition-all duration-300 w-64 h-[calc(100vh-4rem)] 
-            fixed md:sticky top-16 z-40 md:z-20 left-0
+            fixed md:relative top-16 z-40 left-0
           `}
         >
           <ChatSidebar
@@ -114,12 +116,14 @@ const ChatPage = () => {
           />
         </div>
         
-        {/* Main content with proper spacing */}
-        <main className={`
-          flex-1 flex overflow-hidden transition-all duration-300
-          ${showSidebar ? 'md:ml-0' : 'ml-0'}
-          w-full
-        `}>
+        {/* Main content */}
+        <main 
+          className={`
+            flex-1 flex overflow-hidden transition-all duration-300
+            ${showSidebar ? 'md:ml-64' : 'ml-0'}
+            w-full
+          `}
+        >
           {showArticles ? (
             <ArticlesContainer onClose={() => setShowArticles(false)} />
           ) : (

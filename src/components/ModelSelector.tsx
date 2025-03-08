@@ -16,7 +16,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Info } from "lucide-react";
-import { useMobile } from "@/hooks/use-mobile";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface ModelSelectorProps {
   selectedModel: string;
@@ -25,7 +25,7 @@ interface ModelSelectorProps {
 
 export default function ModelSelector({ selectedModel, onModelChange }: ModelSelectorProps) {
   const [hoveredModel, setHoveredModel] = useState<string | null>(null);
-  const isMobile = useMobile();
+  const isMobile = useIsMobile();
   
   const currentModel = AVAILABLE_MODELS.find(model => model.id === selectedModel) || DEFAULT_MODEL;
   

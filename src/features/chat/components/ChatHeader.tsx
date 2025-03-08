@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import ModelSelector from "@/components/ModelSelector";
 import { ChatSession } from "@/types/chat";
 import ExportMenu from "./ExportMenu";
-import { useMobile } from '@/hooks/use-mobile';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface ChatHeaderProps {
   activeSession: ChatSession | null;
@@ -21,7 +21,7 @@ export default function ChatHeader({
   activeSessionId,
   setSessions
 }: ChatHeaderProps) {
-  const isMobile = useMobile();
+  const isMobile = useIsMobile();
 
   return (
     <div className="p-2 sm:p-4 border-b border-border/50">
