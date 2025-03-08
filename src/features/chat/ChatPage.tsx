@@ -11,7 +11,7 @@ import { useThinking } from "./hooks/useThinking";
 import ChatContainer from "./components/ChatContainer";
 import ChatSidebar from "./components/ChatSidebar";
 import ArticlesContainer from "./components/ArticlesContainer";
-import { useMobile } from "@/hooks/use-mobile";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { useTheme } from "./hooks/useTheme";
 
 const ChatPage = () => {
@@ -20,7 +20,7 @@ const ChatPage = () => {
   const [showSidebar, setShowSidebar] = useState(true);
   const [showArticles, setShowArticles] = useState(false);
   const { toast } = useToast();
-  const isMobile = useMobile();
+  const isMobile = useIsMobile();
   const { theme, toggleTheme } = useTheme();
 
   // Auto-hide sidebar on mobile
@@ -86,20 +86,24 @@ const ChatPage = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-background">
+    <div className="flex flex-col h-screen bg-background">
       <Header onToggleSidebar={handleToggleSidebar} onToggleTheme={toggleTheme} />
       
       <div className="flex flex-1 overflow-hidden relative">
-        {/* Sidebar with better positioning and backdrop */}
-        {showSidebar && (
-          <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-10 md:hidden" 
+        {/* Sidebar backdrop for mobile */}
+        {showSidebar && isMobile && (
+          <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-30" 
                onClick={() => setShowSidebar(false)}></div>
         )}
-        <div className={`
-          ${showSidebar ? 'translate-x-0' : '-translate-x-full md:w-0'} 
-          transition-all duration-300 w-64 max-w-[80%] h-[calc(100vh-4rem)] 
-          fixed md:relative z-20 md:translate-x-0
-        `}>
+        
+        {/* Sidebar with proper positioning */}
+        <div 
+          className={`
+            ${showSidebar ? 'translate-x-0' : '-translate-x-full md:-translate-x-full md:w-0'} 
+            transition-all duration-300 w-64 h-[calc(100vh-4rem)] 
+            fixed md:sticky top-16 z-40 md:z-20 left-0
+          `}
+        >
           <ChatSidebar
             sessions={sessions}
             activeSessionId={activeSessionId}
@@ -110,7 +114,12 @@ const ChatPage = () => {
           />
         </div>
         
-        <main className="flex-1 flex overflow-hidden md:ml-0 w-full">
+        {/* Main content with proper spacing */}
+        <main className={`
+          flex-1 flex overflow-hidden transition-all duration-300
+          ${showSidebar ? 'md:ml-0' : 'ml-0'}
+          w-full
+        `}>
           {showArticles ? (
             <ArticlesContainer onClose={() => setShowArticles(false)} />
           ) : (

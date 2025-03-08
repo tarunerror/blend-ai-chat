@@ -2,7 +2,7 @@
 import { Menu, Sun, Moon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import BlendLogo from "./BlendLogo";
-import { useMobile } from "@/hooks/use-mobile";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { useTheme } from "@/features/chat/hooks/useTheme";
 
 interface HeaderProps {
@@ -11,18 +11,19 @@ interface HeaderProps {
 }
 
 export default function Header({ onToggleSidebar, onToggleTheme }: HeaderProps) {
-  const isMobile = useMobile();
+  const isMobile = useIsMobile();
   const { theme } = useTheme();
 
   return (
-    <header className="sticky top-0 z-30 h-16 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-full items-center justify-between">
+    <header className="sticky top-0 z-50 h-16 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="flex h-full items-center justify-between px-4">
         <div className="flex items-center gap-2">
           <Button
             variant="ghost"
             size="icon"
             onClick={onToggleSidebar}
             className="mr-1"
+            title="Toggle sidebar"
           >
             <Menu className="h-5 w-5" />
             <span className="sr-only">Toggle sidebar</span>

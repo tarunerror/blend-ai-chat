@@ -28,7 +28,7 @@ export default function Sidebar({
   const [hoveredSessionId, setHoveredSessionId] = useState<string | null>(null);
 
   return (
-    <div className="w-full h-full flex flex-col bg-secondary/30 border-r border-border/50 shadow-lg">
+    <div className="w-full h-full flex flex-col bg-secondary/30 border-r border-border/50 shadow-md">
       <div className="p-3 sm:p-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <div className="h-5 w-5 sm:h-6 sm:w-6">
@@ -40,7 +40,7 @@ export default function Sidebar({
           variant="ghost"
           size="icon"
           onClick={onNewSession}
-          className="hover-scale text-primary h-8 w-8 sm:h-10 sm:w-10"
+          className="hover-scale text-primary h-8 w-8 sm:h-9 sm:w-9"
         >
           <MessageSquarePlus className="h-4 w-4 sm:h-5 sm:w-5" />
           <span className="sr-only">New Chat</span>
