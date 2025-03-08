@@ -1,4 +1,5 @@
 
+import { useState } from "react";
 import { AVAILABLE_MODELS, DEFAULT_MODEL } from "@/lib/openrouter";
 import {
   Select,
@@ -8,6 +9,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { Info } from "lucide-react";
 
 interface ModelSelectorProps {
   selectedModel: string;
@@ -15,8 +23,12 @@ interface ModelSelectorProps {
 }
 
 export default function ModelSelector({ selectedModel, onModelChange }: ModelSelectorProps) {
+  const [hoveredModel, setHoveredModel] = useState<string | null>(null);
+  
+  const currentModel = AVAILABLE_MODELS.find(model => model.id === selectedModel) || DEFAULT_MODEL;
+  
   return (
-    <div className="w-full max-w-[220px]">
+    <div className="w-full max-w-[240px] relative">
       <Select value={selectedModel} onValueChange={onModelChange}>
         <SelectTrigger className="w-full bg-background border-border/50 focus:ring-primary/20">
           <SelectValue placeholder="Select a model" />
@@ -28,6 +40,8 @@ export default function ModelSelector({ selectedModel, onModelChange }: ModelSel
                 key={model.id}
                 value={model.id}
                 className="flex flex-col items-start"
+                onMouseEnter={() => setHoveredModel(model.id)}
+                onMouseLeave={() => setHoveredModel(null)}
               >
                 <div className="flex items-center gap-2">
                   <span>{model.name}</span>
@@ -40,6 +54,31 @@ export default function ModelSelector({ selectedModel, onModelChange }: ModelSel
           </SelectGroup>
         </SelectContent>
       </Select>
+      
+      <div className="mt-1 text-xs text-muted-foreground flex items-center gap-1">
+        <span>{currentModel.provider}</span>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Info className="h-3 w-3 cursor-help" />
+            </TooltipTrigger>
+            <TooltipContent className="max-w-xs p-3 space-y-2">
+              <p className="font-medium">{currentModel.name}</p>
+              <p className="text-xs">{currentModel.description}</p>
+              {currentModel.strengths && (
+                <div>
+                  <p className="font-medium text-xs mt-1">Strengths:</p>
+                  <ul className="text-xs list-disc pl-4 space-y-0.5 mt-1">
+                    {currentModel.strengths.map((strength, i) => (
+                      <li key={i}>{strength}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      </div>
     </div>
   );
 }

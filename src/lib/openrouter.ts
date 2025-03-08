@@ -1,47 +1,55 @@
 
 import { ChatMessage } from "@/types/chat";
 
-// Top 5 free models on OpenRouter (these may change, check OpenRouter for current models)
+// Updated list of free models on OpenRouter
 export const AVAILABLE_MODELS: { id: string; name: string; provider: string; description: string; maxTokens: number; strengths?: string[] }[] = [
   {
-    id: "anthropic/claude-3-haiku",
-    name: "Claude 3 Haiku",
-    provider: "Anthropic",
-    description: "Fast and efficient model for everyday tasks",
-    maxTokens: 200000,
-    strengths: ["Speed", "Efficiency", "General knowledge"]
+    id: "nvidia/llama-3.1-nemotron-70b-instruct",
+    name: "Nemotron 70B",
+    provider: "NVIDIA",
+    description: "Powerful large language model from NVIDIA",
+    maxTokens: 8192,
+    strengths: ["Context understanding", "Complex reasoning", "Knowledge depth"]
   },
   {
-    id: "google/gemma-7b-it",
-    name: "Gemma 7B",
+    id: "google/gemini-2.0-flash-exp",
+    name: "Gemini 2.0 Flash",
     provider: "Google",
-    description: "Lightweight open model with strong capabilities",
+    description: "Fast and efficient model with broad capabilities",
     maxTokens: 8192,
-    strengths: ["Lightweight", "Instruction following", "Code generation"]
+    strengths: ["Speed", "Efficient responses", "Wide knowledge base"]
   },
   {
-    id: "meta-llama/llama-3-8b-instruct",
-    name: "Llama 3 8B",
+    id: "meta-llama/llama-3.2-11b-vision-instruct",
+    name: "Llama 3.2 Vision",
     provider: "Meta",
-    description: "Compact and capable open model from Meta",
-    maxTokens: 8192,
-    strengths: ["Text completion", "Creative writing", "Reasoning"]
+    description: "Multimodal model with vision capabilities",
+    maxTokens: 16384,
+    strengths: ["Image understanding", "Visual reasoning", "Instruction following"]
   },
   {
-    id: "mistralai/mistral-7b-instruct",
-    name: "Mistral 7B",
-    provider: "Mistral AI",
-    description: "Powerful instruction-tuned model",
+    id: "qwen/qwen2.5-vl-72b-instruct",
+    name: "Qwen 2.5 VL",
+    provider: "Alibaba",
+    description: "Large vision-language model with advanced capabilities",
     maxTokens: 8192,
-    strengths: ["Instruction following", "Knowledge", "Coherence"]
+    strengths: ["Multimodal understanding", "Language precision", "Visual comprehension"]
   },
   {
-    id: "gryphe/mythomax-l2-13b",
-    name: "MythoMax L2 13B",
-    provider: "Gryphe",
-    description: "Creative model with wide-ranging knowledge",
+    id: "cognitivecomputations/dolphin3.0-r1-mistral-24b",
+    name: "Dolphin 3.0",
+    provider: "CogComp",
+    description: "Advanced reasoning model with expanded capabilities",
     maxTokens: 8192,
-    strengths: ["Creativity", "Storytelling", "Detailed responses"]
+    strengths: ["Creativity", "Problem solving", "Detailed responses"]
+  },
+  {
+    id: "deepseek/deepseek-r1",
+    name: "DeepSeek R1",
+    provider: "DeepSeek",
+    description: "Reasoning-focused model with broad knowledge",
+    maxTokens: 8192,
+    strengths: ["Logical reasoning", "Knowledge application", "Coherent explanations"]
   }
 ];
 

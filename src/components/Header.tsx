@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Sparkles, AlertCircle, Info } from "lucide-react";
+import { Info, Menu } from "lucide-react";
 import { 
   Tooltip, 
   TooltipContent, 
@@ -15,19 +15,25 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import BlendLogo from "@/components/BlendLogo";
 
-export default function Header() {
+export default function Header({ onToggleSidebar }: { onToggleSidebar?: () => void }) {
   const [showAbout, setShowAbout] = useState(false);
 
   return (
     <header className="w-full border-b border-border/50 bg-background/80 backdrop-blur-md sticky top-0 z-10">
       <div className="container flex h-16 items-center justify-between py-4">
-        <div className="flex items-center gap-2">
-          <Sparkles className="h-6 w-6 text-primary animate-pulse-slow" />
+        <div className="flex items-center gap-3">
+          {onToggleSidebar && (
+            <Button variant="ghost" size="icon" onClick={onToggleSidebar} className="lg:hidden">
+              <Menu className="h-5 w-5" />
+              <span className="sr-only">Toggle Sidebar</span>
+            </Button>
+          )}
+          <div className="h-8 w-8">
+            <BlendLogo />
+          </div>
           <h1 className="text-xl font-medium tracking-tight">Blend AI Chat</h1>
-          <span className="bg-accent text-accent-foreground text-xs px-2 py-0.5 rounded-full">
-            Beta
-          </span>
         </div>
 
         <div className="flex items-center gap-2">
@@ -55,7 +61,9 @@ export default function Header() {
           <DialogContent className="glass-card sm:max-w-md">
             <DialogHeader>
               <DialogTitle className="flex items-center gap-2">
-                <Sparkles className="h-5 w-5 text-primary" />
+                <div className="h-5 w-5">
+                  <BlendLogo />
+                </div>
                 About Blend AI Chat
               </DialogTitle>
               <DialogDescription>
@@ -72,15 +80,21 @@ export default function Header() {
                 <h4 className="mb-2 text-sm font-medium">Features</h4>
                 <ul className="text-sm text-muted-foreground space-y-2">
                   <li className="flex items-start gap-2">
-                    <AlertCircle className="h-4 w-4 text-primary mt-0.5" />
+                    <div className="h-4 w-4 mt-0.5 text-primary">
+                      <BlendLogo small />
+                    </div>
                     <span>Access to multiple AI models in one interface</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <AlertCircle className="h-4 w-4 text-primary mt-0.5" />
+                    <div className="h-4 w-4 mt-0.5 text-primary">
+                      <BlendLogo small />
+                    </div>
                     <span>Seamless model switching</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <AlertCircle className="h-4 w-4 text-primary mt-0.5" />
+                    <div className="h-4 w-4 mt-0.5 text-primary">
+                      <BlendLogo small />
+                    </div>
                     <span>Save and manage conversation history</span>
                   </li>
                 </ul>

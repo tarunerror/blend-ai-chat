@@ -23,3 +23,18 @@ export interface AIModel {
   maxTokens: number;
   strengths?: string[];
 }
+
+export interface Article {
+  id: string;
+  title: string;
+  description: string;
+  url: string;
+  coverImage: string;
+  publishedAt: string;
+  readingTimeMinutes: number;
+  author: {
+    name: string;
+    profileImage?: string;
+  };
+  tags: string[];
+}
