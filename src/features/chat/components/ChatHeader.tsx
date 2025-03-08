@@ -3,6 +3,7 @@ import { Dispatch, SetStateAction } from 'react';
 import { Button } from "@/components/ui/button";
 import ModelSelector from "@/components/ModelSelector";
 import { ChatSession } from "@/types/chat";
+import ExportMenu from "./ExportMenu";
 
 interface ChatHeaderProps {
   activeSession: ChatSession | null;
@@ -27,7 +28,9 @@ export default function ChatHeader({
           onModelChange={setSelectedModel} 
         />
         
-        <div className="flex items-center gap-2">          
+        <div className="flex items-center gap-2">
+          <ExportMenu session={activeSession} />
+          
           {activeSession && activeSession.messages.length > 0 && (
             <Button
               variant="ghost"

@@ -41,7 +41,7 @@ const ChatPage = () => {
 
   // Check for API key on load
   useEffect(() => {
-    const storedApiKey = localStorage.getItem("openrouter-api-key") || process.env.VITE_OPENROUTER_API_KEY;
+    const storedApiKey = localStorage.getItem("openrouter-api-key") || import.meta.env.VITE_OPENROUTER_API_KEY;
     if (!storedApiKey) {
       setShowApiKeyModal(true);
     }

@@ -40,10 +40,6 @@ export default function ChatContainer({
 }: ChatContainerProps) {
   const { toast } = useToast();
 
-  const handleChangeApiKey = () => {
-    // This functionality is now handled in the parent component
-  };
-
   const handleSendMessage = async (content: string) => {
     if (!activeSessionId) {
       return;
@@ -94,7 +90,7 @@ export default function ChatContainer({
       setIsThinking(false);
       
       // Use either stored API key or env variable
-      const apiKey = localStorage.getItem("openrouter-api-key") || process.env.VITE_OPENROUTER_API_KEY;
+      const apiKey = localStorage.getItem("openrouter-api-key") || import.meta.env.VITE_OPENROUTER_API_KEY;
       if (!apiKey) {
         throw new Error("API key not found");
       }

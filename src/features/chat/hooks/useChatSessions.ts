@@ -2,17 +2,18 @@
 import { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { ChatSession } from "@/types/chat";
-import { Toast } from "@/hooks/use-toast";
+import { useToast } from "@/hooks/use-toast";
 
-export function useChatSessions(toast: Toast) {
+export function useChatSessions(toast: ReturnType<typeof useToast>) {
   const [sessions, setSessions] = useState<ChatSession[]>([]);
   const [activeSessionId, setActiveSessionId] = useState<string | null>(null);
 
-  const activeSession = activeSessionId 
-    ? sessions.find(session => session.id === activeSessionId) 
+  // Get active session object
+  const activeSession = activeSessionId
+    ? sessions.find((session) => session.id === activeSessionId) || null
     : null;
 
-  // Load sessions from localStorage on mount
+  // Load sessions from localStorage on component mount
   useEffect(() => {
     const storedSessions = localStorage.getItem("chat-sessions");
     if (storedSessions) {
@@ -20,70 +21,68 @@ export function useChatSessions(toast: Toast) {
         const parsedSessions = JSON.parse(storedSessions);
         setSessions(parsedSessions);
         
-        const lastActiveSessionId = localStorage.getItem("active-session-id");
-        if (lastActiveSessionId && parsedSessions.some((s: ChatSession) => s.id === lastActiveSessionId)) {
-          setActiveSessionId(lastActiveSessionId);
-        } else if (parsedSessions.length > 0) {
-          setActiveSessionId(parsedSessions[0].id);
+        // Set active session to most recently updated if it exists
+        if (parsedSessions.length > 0) {
+          const sortedSessions = [...parsedSessions].sort(
+            (a, b) => b.updatedAt - a.updatedAt
+          );
+          setActiveSessionId(sortedSessions[0].id);
         }
       } catch (error) {
-        console.error("Failed to parse stored sessions:", error);
+        console.error("Error parsing stored sessions:", error);
       }
-    } else {
-      handleNewSession();
     }
   }, []);
 
-  // Save sessions to localStorage when they change
+  // Save sessions to localStorage whenever they change
   useEffect(() => {
-    if (sessions.length > 0) {
-      localStorage.setItem("chat-sessions", JSON.stringify(sessions));
-    }
-    
-    if (activeSessionId) {
-      localStorage.setItem("active-session-id", activeSessionId);
-    }
-  }, [sessions, activeSessionId]);
+    localStorage.setItem("chat-sessions", JSON.stringify(sessions));
+  }, [sessions]);
 
+  // Create a new chat session
   const handleNewSession = () => {
-    const newSessionId = uuidv4();
     const newSession: ChatSession = {
-      id: newSessionId,
-      title: `New Chat`,
+      id: uuidv4(),
+      title: "New Chat",
       messages: [],
       createdAt: Date.now(),
       updatedAt: Date.now(),
     };
-    
-    setSessions(prev => [newSession, ...prev]);
-    setActiveSessionId(newSessionId);
-    
-    toast({
-      title: "New conversation started",
-      description: "You can now start chatting with the AI",
-    });
+
+    setSessions((prev) => [newSession, ...prev]);
+    setActiveSessionId(newSession.id);
   };
 
+  // Select an existing session
   const handleSelectSession = (sessionId: string) => {
     setActiveSessionId(sessionId);
   };
 
+  // Delete a session
   const handleDeleteSession = (sessionId: string) => {
-    setSessions(prev => prev.filter(session => session.id !== sessionId));
+    const sessionToDelete = sessions.find((s) => s.id === sessionId);
     
-    if (activeSessionId === sessionId) {
-      const remainingSessions = sessions.filter(session => session.id !== sessionId);
-      if (remainingSessions.length > 0) {
-        setActiveSessionId(remainingSessions[0].id);
-      } else {
-        handleNewSession();
+    if (sessionToDelete) {
+      setSessions((prev) => prev.filter((session) => session.id !== sessionId));
+      
+      if (activeSessionId === sessionId) {
+        const remainingSessions = sessions.filter((s) => s.id !== sessionId);
+        if (remainingSessions.length > 0) {
+          // Set the most recently updated session as active
+          const mostRecent = [...remainingSessions].sort(
+            (a, b) => b.updatedAt - a.updatedAt
+          )[0];
+          setActiveSessionId(mostRecent.id);
+        } else {
+          setActiveSessionId(null);
+        }
       }
+      
+      toast({
+        title: "Chat Deleted",
+        description: `"${sessionToDelete.title}" has been deleted.`,
+      });
     }
-    
-    toast({
-      title: "Conversation deleted",
-      description: "The conversation has been removed",
-    });
   };
 
   return {
