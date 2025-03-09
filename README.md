@@ -34,7 +34,7 @@ Blend AI Chat is a sleek, intuitive interface that lets you interact with the to
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/blend-ai-chat.git
+   git clone https://github.com/tarunerror/blendaichat.git
    cd blend-ai-chat
    ```
 
@@ -105,5 +105,5 @@ Before contributing, please read our [Contributing Guidelines](CONTRIBUTING.md).
 ---
 
 <p align="center">
-  Made with ❤️ by your name
+  Made with ❤️ by Tarun Gautam
 </p>
