@@ -1,7 +1,7 @@
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
   text-align: center;
 }
 
@@ -12,10 +12,10 @@
   transition: filter 300ms;
 }
 .logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+  filter: drop-shadow(0 0 2em #9b87f5aa);
 }
 .logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+  filter: drop-shadow(0 0 2em #D946EFaa);
 }
 
 @keyframes logo-spin {
@@ -39,4 +39,40 @@
 
 .read-the-docs {
   color: #888;
+}
+
+.typing-indicator::after {
+  content: "";
+  animation: typing 1.5s infinite;
+}
+
+@keyframes typing {
+  0%, 33% { content: "." }
+  34%, 66% { content: ".." }
+  67%, 100% { content: "..." }
+}
+
+.effect-3d {
+  transform-style: preserve-3d;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1), 
+              0 -4px 12px rgba(255, 255, 255, 0.1);
+}
+
+.shadow-glow {
+  box-shadow: 0 0 15px 1px rgba(155, 135, 245, 0.4);
+}
+
+.gradient-border {
+  position: relative;
+  border-radius: 0.75rem;
+}
+
+.gradient-border::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  z-index: -1;
+  border-radius: 0.85rem;
+  background: linear-gradient(135deg, #9b87f5 0%, #D946EF 100%);
+  opacity: 0.6;
 }

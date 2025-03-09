@@ -2,7 +2,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Sparkles, ArrowUpCircle } from "lucide-react";
+import { Sparkles, ArrowUpCircle, Wand2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -15,6 +15,7 @@ export default function ChatInput({ onSendMessage, isLoading }: ChatInputProps) 
   const [message, setMessage] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const isMobile = useIsMobile();
+  const [isFocused, setIsFocused] = useState(false);
 
   // Auto-resize the textarea
   useEffect(() => {
@@ -51,7 +52,12 @@ export default function ChatInput({ onSendMessage, isLoading }: ChatInputProps) 
   };
 
   return (
-    <div className="relative glass-card rounded-xl sm:rounded-2xl p-1 sm:p-2 transition-all duration-200">
+    <div className={cn(
+      "relative rounded-xl sm:rounded-2xl p-1 sm:p-2 transition-all duration-300",
+      isFocused 
+        ? "shadow-glow gradient-border" 
+        : "glass-card"
+    )}>
       <form 
         className="flex items-end gap-1 sm:gap-2"
         onSubmit={(e) => {
@@ -59,25 +65,40 @@ export default function ChatInput({ onSendMessage, isLoading }: ChatInputProps) 
           handleSendMessage();
         }}
       >
-        <Textarea
-          ref={textareaRef}
-          placeholder="Type a message..."
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          onKeyDown={handleKeyDown}
-          className={cn(
-            "min-h-[44px] sm:min-h-[60px] resize-none border-0 bg-transparent p-2 sm:p-3 focus-visible:ring-0 focus-visible:ring-offset-0",
-            "placeholder:text-muted-foreground/50 text-sm"
-          )}
-          disabled={isLoading}
-        />
+        <div className="relative flex-1">
+          <div className="absolute left-2 top-2 opacity-50">
+            <Wand2 size={16} className={cn("text-primary", message.length > 0 && "animate-wiggle")} />
+          </div>
+          <Textarea
+            ref={textareaRef}
+            placeholder="Type a message..."
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            onKeyDown={handleKeyDown}
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
+            className={cn(
+              "min-h-[44px] sm:min-h-[60px] resize-none border-0 bg-transparent pl-8 p-2 sm:p-3 focus-visible:ring-0 focus-visible:ring-offset-0",
+              "placeholder:text-muted-foreground/50 text-sm",
+              "transition-all duration-300"
+            )}
+            disabled={isLoading}
+          />
+          <div className={cn(
+            "absolute bottom-2 right-2 text-xs text-muted-foreground/50",
+            message.length > 0 ? "opacity-100" : "opacity-0",
+            "transition-opacity duration-200"
+          )}>
+            {message.length}
+          </div>
+        </div>
         <Button
           type="submit"
           size="icon"
           className={cn(
-            "mb-1 mr-1 h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-primary text-primary-foreground transition-all", 
-            "hover:bg-primary/90",
-            isLoading ? "opacity-50 cursor-not-allowed" : "hover-scale"
+            "mb-1 mr-1 h-8 w-8 sm:h-10 sm:w-10 rounded-full text-primary-foreground transition-all", 
+            isLoading ? "bg-accent animate-pulse" : "bg-primary hover:bg-primary/90 hover-scale",
+            "shadow-md"
           )}
           disabled={!message.trim() || isLoading}
         >
