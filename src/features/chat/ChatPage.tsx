@@ -101,9 +101,9 @@ const ChatPage = () => {
         {/* Sidebar */}
         <div 
           className={`
-            transition-all duration-300 w-64 z-40
-            ${showSidebar ? 'translate-x-0' : '-translate-x-full'} 
-            ${isMobile ? 'fixed left-0 top-16 h-[calc(100vh-4rem)]' : 'relative h-full'}
+            absolute md:relative z-40 h-full
+            transition-all duration-300 ease-in-out
+            ${showSidebar ? 'translate-x-0 w-64' : '-translate-x-full w-0 md:w-0'} 
           `}
         >
           <ChatSidebar
@@ -116,13 +116,13 @@ const ChatPage = () => {
           />
         </div>
         
-        {/* Main content - adjust left transition based on sidebar state */}
-        <main 
+        {/* Main content - adjust with transition when sidebar state changes */}
+        <div 
           className={`
-            flex-1 flex overflow-hidden w-full transition-all duration-300
-            ${!isMobile && showSidebar ? 'ml-0' : (isMobile ? 'ml-0' : 'ml-[-64px]')}
+            flex-1 w-full h-full
+            transition-all duration-300 ease-in-out
+            ${showSidebar ? 'md:ml-0' : 'ml-0'}
           `}
-          style={{ width: '100%' }}
         >
           {showArticles ? (
             <ArticlesContainer onClose={() => setShowArticles(false)} />
@@ -144,7 +144,7 @@ const ChatPage = () => {
               isMobile={isMobile}
             />
           )}
-        </main>
+        </div>
       </div>
       
       <ApiKeyModal

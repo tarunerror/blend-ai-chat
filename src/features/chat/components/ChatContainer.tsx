@@ -1,4 +1,3 @@
-
 import { Dispatch, SetStateAction } from 'react';
 import { v4 as uuidv4 } from "uuid";
 import { useToast } from "@/hooks/use-toast";
@@ -133,10 +132,7 @@ export default function ChatContainer({
   };
 
   return (
-    <div className={`
-      flex-1 flex flex-col h-full w-full transition-all duration-300
-      ${!isMobile && !showSidebar ? 'max-w-[calc(100vw)]' : ''}
-    `}>
+    <div className="flex flex-col h-full w-full">
       <ChatHeader 
         activeSession={activeSession}
         selectedModel={selectedModel}
@@ -149,7 +145,8 @@ export default function ChatContainer({
       
       <div className="flex-1 overflow-y-auto">
         <div className={`
-          mx-auto px-4 py-6 space-y-6 transition-all duration-300
+          transition-all duration-300 ease-in-out
+          mx-auto px-4 py-6 space-y-6
           ${!showSidebar && !isMobile ? 'max-w-6xl' : 'max-w-4xl'}
         `}>
           {activeSession && activeSession.messages.length === 0 ? (
@@ -167,7 +164,7 @@ export default function ChatContainer({
       
       <div className="p-4 border-t border-border/50 bg-gradient-to-t from-background via-background to-background/0">
         <div className={`
-          mx-auto transition-all duration-300
+          mx-auto transition-all duration-300 ease-in-out
           ${!showSidebar && !isMobile ? 'max-w-6xl' : 'max-w-4xl'}
         `}>
           <ChatInput onSendMessage={handleSendMessage} isLoading={isLoading} />
