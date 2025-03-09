@@ -1,30 +1,76 @@
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>BlendAIChat</title>
-    <meta name="description" content="Chat with AI and analyze documents" />
-    <meta name="author" content="Lovable" />
-    <meta property="og:image" content="/og-image.png" />
     
-    <!-- PWA Meta Tags -->
+    <!-- Primary Meta Tags -->
+    <title>BlendAIChat | AI-Powered Chat & Document Analysis Tool</title>
+    <meta name="title" content="BlendAIChat | AI-Powered Chat & Document Analysis Tool" />
+    <meta name="description" content="Engage with advanced AI chat technology and perform intelligent document analysis at BlendAIChat. Experience seamless AI-powered conversations and deep document insights." />
+    <meta name="author" content="BlendAI Team" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://blendaichat.netlify.app/" />
+    <meta property="og:title" content="BlendAIChat | AI-Powered Chat & Document Analysis Tool" />
+    <meta property="og:description" content="Engage with advanced AI chat technology and perform intelligent document analysis at BlendAIChat. Experience seamless AI-powered conversations and deep document insights." />
+    <meta property="og:image" content="https://blendaichat.netlify.app/og-image.png" />
+    <meta property="og:site_name" content="BlendAIChat" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://blendaichat.netlify.app/" />
+    <meta property="twitter:title" content="BlendAIChat | AI-Powered Chat & Document Analysis Tool" />
+    <meta property="twitter:description" content="Engage with advanced AI chat technology and perform intelligent document analysis at BlendAIChat. Experience seamless AI-powered conversations and deep document insights." />
+    <meta property="twitter:image" content="https://blendaichat.netlify.app/og-image.png" />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://blendaichat.netlify.app/" />
+
+    <!-- Robots -->
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+
+    <!-- PWA Configuration -->
     <meta name="theme-color" content="#6d28d9" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <meta name="apple-mobile-web-app-title" content="ChatMingle" />
+    <meta name="apple-mobile-web-app-title" content="BlendAIChat" />
     
-    <!-- PWA Icons -->
+    <!-- Icons -->
     <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192x192.png" />
     <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
-    
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+
     <!-- Web App Manifest -->
     <link rel="manifest" href="/manifest.json" />
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "BlendAIChat",
+      "description": "AI-Powered Chat & Document Analysis Tool",
+      "url": "https://blendaichat.netlify.app/",
+      "applicationCategory": "Productivity",
+      "operatingSystem": "Web",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+    </script>
   </head>
 
   <body>
     <div id="root"></div>
+    <noscript>
+      <h1>Welcome to BlendAIChat</h1>
+      <p>Please enable JavaScript to experience our AI-powered chat and document analysis features.</p>
+    </noscript>
+
     <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     <script type="module" src="/src/main.tsx"></script>
