@@ -35,7 +35,7 @@ Blend AI Chat is a sleek, intuitive interface that lets you interact with the to
 1. Clone the repository:
    ```bash
    git clone https://github.com/tarunerror/blendaichat.git
-   cd blend-ai-chat
+   cd blendaichat
    ```
 
 2. Install the dependencies:
