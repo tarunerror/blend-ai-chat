@@ -22,17 +22,17 @@ export default function Header({ onToggleSidebar, onToggleTheme }: HeaderProps) 
             variant="ghost"
             size="icon"
             onClick={onToggleSidebar}
-            className="mr-1"
+            className="mr-1 hover:bg-primary/10"
             title="Toggle sidebar"
           >
             <Menu className="h-5 w-5" />
             <span className="sr-only">Toggle sidebar</span>
           </Button>
           <div className="flex items-center gap-2">
-            <div className="h-6 w-6">
+            <div className="h-6 w-6 relative pulse-effect">
               <BlendLogo />
             </div>
-            <h1 className="text-lg font-semibold">Blend AI Chat</h1>
+            <h1 className="text-lg font-semibold gradient-text">Blend AI Chat</h1>
           </div>
         </div>
         
@@ -42,7 +42,7 @@ export default function Header({ onToggleSidebar, onToggleTheme }: HeaderProps) 
               variant="ghost"
               size="icon"
               onClick={onToggleTheme}
-              className="rounded-full"
+              className="rounded-full hover:bg-primary/10"
               title={theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}
             >
               {theme === 'light' ? (

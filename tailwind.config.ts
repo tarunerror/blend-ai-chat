@@ -123,6 +123,15 @@ export default {
 					'25%': { borderRadius: '30% 60% 70% 40% / 50% 60% 30% 60%' },
 					'50%': { borderRadius: '40% 60% 30% 70% / 60% 40% 70% 30%' },
 					'75%': { borderRadius: '40% 60% 70% 30% / 30% 40% 70% 60%' }
+				},
+				'galaxy-spin': {
+					'0%': { transform: 'rotate(0deg) scale(1)' },
+					'50%': { transform: 'rotate(180deg) scale(1.1)' },
+					'100%': { transform: 'rotate(360deg) scale(1)' }
+				},
+				'ripple': {
+					'0%': { transform: 'scale(0.8)', opacity: '1' },
+					'100%': { transform: 'scale(2.4)', opacity: '0' }
 				}
 			},
 			animation: {
@@ -138,7 +147,9 @@ export default {
 				'float': 'float 6s ease-in-out infinite',
 				'wiggle': 'wiggle 2s ease-in-out infinite',
 				'gradual-rotate': 'gradual-rotate 12s linear infinite',
-				'blobs': 'blobs 10s linear infinite'
+				'blobs': 'blobs 10s linear infinite',
+				'galaxy-spin': 'galaxy-spin 20s linear infinite',
+				'ripple': 'ripple 3s linear infinite'
 			},
 			backgroundImage: {
 				'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
@@ -147,6 +158,8 @@ export default {
 				'purple-gradient': 'linear-gradient(135deg, #9b87f5 0%, #D946EF 100%)',
 				'sunset-gradient': 'linear-gradient(90deg, hsla(29, 92%, 70%, 1) 0%, hsla(0, 87%, 73%, 1) 100%)',
 				'aurora-gradient': 'linear-gradient(90deg, hsla(46, 73%, 75%, 1) 0%, hsla(176, 73%, 88%, 1) 100%)',
+				'cosmic-gradient': 'linear-gradient(135deg, #1E2B6B 0%, #702FA0 50%, #F0386B 100%)',
+				'nebula-gradient': 'linear-gradient(45deg, #0C0F2A 0%, #173E7B 50%, #302B63 100%)'
 			},
 			backdropFilter: {
 				'none': 'none',

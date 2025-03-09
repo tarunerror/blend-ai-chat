@@ -1,6 +1,5 @@
 
 import { useState, useEffect } from "react";
-import { v4 as uuidv4 } from "uuid";
 import { useToast } from "@/components/ui/use-toast";
 import { ChatSession } from "@/types/chat";
 import Header from "@/components/Header";
@@ -13,6 +12,7 @@ import ChatSidebar from "./components/ChatSidebar";
 import ArticlesContainer from "./components/ArticlesContainer";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useTheme } from "./hooks/useTheme";
+import { cn } from "@/lib/utils";
 
 const ChatPage = () => {
   const [selectedModel, setSelectedModel] = useState(DEFAULT_MODEL.id);
@@ -88,10 +88,14 @@ const ChatPage = () => {
     }
   }, [realTimeThinking]);
 
-  // Check for API key on load
+  // Check for API key on load - use env variable if available
   useEffect(() => {
     const storedApiKey = localStorage.getItem("openrouter-api-key") || import.meta.env.VITE_OPENROUTER_API_KEY;
-    if (!storedApiKey) {
+    if (import.meta.env.VITE_OPENROUTER_API_KEY) {
+      // If API key exists in env variables, store it in localStorage to avoid modal
+      localStorage.setItem("openrouter-api-key", import.meta.env.VITE_OPENROUTER_API_KEY);
+      setShowApiKeyModal(false);
+    } else if (!storedApiKey) {
       setShowApiKeyModal(true);
     }
   }, []);
@@ -122,7 +126,10 @@ const ChatPage = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-background">
+    <div className={cn(
+      "flex flex-col h-screen bg-background",
+      theme === "dark" ? "dark" : ""
+    )}>
       <Header onToggleSidebar={handleToggleSidebar} onToggleTheme={toggleTheme} />
       
       <div className="flex flex-1 overflow-hidden relative">
@@ -136,11 +143,11 @@ const ChatPage = () => {
         
         {/* Sidebar */}
         <div 
-          className={`
-            absolute md:relative z-40 h-full
-            transition-all duration-300 ease-in-out
-            ${showSidebar ? 'translate-x-0 w-64' : '-translate-x-full w-0 md:w-0'} 
-          `}
+          className={cn(
+            "absolute md:relative z-40 h-full",
+            "transition-all duration-300 ease-in-out",
+            showSidebar ? 'translate-x-0 w-60 md:w-64' : '-translate-x-full w-0 md:w-0'
+          )}
         >
           {showSidebar && (
             <ChatSidebar
@@ -154,13 +161,13 @@ const ChatPage = () => {
           )}
         </div>
         
-        {/* Main content - adjust with transition when sidebar state changes */}
+        {/* Main content */}
         <div 
-          className={`
-            flex-1 w-full h-full
-            transition-all duration-300 ease-in-out
-            ${showSidebar ? 'md:ml-0' : 'ml-0'}
-          `}
+          className={cn(
+            "flex-1 w-full h-full",
+            "transition-all duration-300 ease-in-out",
+            showSidebar ? 'md:ml-0' : 'ml-0'
+          )}
         >
           {showArticles ? (
             <ArticlesContainer onClose={() => setShowArticles(false)} />

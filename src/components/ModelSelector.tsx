@@ -18,6 +18,7 @@ import {
 import { Info } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 
 interface ModelSelectorProps {
   selectedModel: string;
@@ -48,7 +49,10 @@ export default function ModelSelector({ selectedModel, onModelChange }: ModelSel
         value={currentModel ? selectedModel : DEFAULT_MODEL.id} 
         onValueChange={onModelChange}
       >
-        <SelectTrigger className="w-full bg-background border-border/50 focus:ring-primary/20 text-sm">
+        <SelectTrigger className={cn(
+          "w-full bg-background border-border/50 focus:ring-primary/20",
+          "text-xs sm:text-sm h-9 sm:h-10 pl-3 pr-2"
+        )}>
           <SelectValue placeholder="Select a model" />
         </SelectTrigger>
         <SelectContent className="glass-card">

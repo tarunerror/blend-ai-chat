@@ -5,6 +5,8 @@ import ModelSelector from "@/components/ModelSelector";
 import { ChatSession } from "@/types/chat";
 import ExportMenu from "./ExportMenu";
 import { useIsMobile } from '@/hooks/use-mobile';
+import { ChevronDown, Info } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 interface ChatHeaderProps {
   activeSession: ChatSession | null;
@@ -28,24 +30,37 @@ export default function ChatHeader({
   const isMobileHook = useIsMobile();
   const effectiveIsMobile = isMobile || isMobileHook;
   
-  // Mobile headers should always be visible regardless of sidebar state
-  // We only want to hide the content when sidebar is open on mobile to avoid duplication
-
   return (
-    <div className="p-2 sm:p-4 border-b border-border/50">
-      <div className={`
-        mx-auto transition-all duration-300 ease-in-out
-        ${!showSidebar && !effectiveIsMobile ? 'max-w-6xl' : 'max-w-4xl'}
-      `}>
+    <div className="p-2 sm:p-3 border-b border-border/50 bg-background/95 backdrop-blur-sm sticky top-0 z-10">
+      <div className={cn(
+        "mx-auto transition-all duration-300 ease-in-out",
+        (!showSidebar && !effectiveIsMobile) ? 'max-w-6xl' : 'max-w-4xl'
+      )}>
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-          <div className={`transition-all duration-300 ease-in-out ${!showSidebar && !effectiveIsMobile ? 'w-auto' : 'w-full sm:w-auto'}`}>
+          <div className={cn(
+            "transition-all duration-300 ease-in-out flex items-center",
+            (!showSidebar && !effectiveIsMobile) ? 'w-auto' : 'w-full sm:w-auto'
+          )}>
             <ModelSelector 
               selectedModel={selectedModel} 
               onModelChange={setSelectedModel} 
             />
+            
+            {!effectiveIsMobile && (
+              <div className="flex items-center ml-2 text-xs text-muted-foreground">
+                <Info className="h-3 w-3 mr-1" />
+                <span className="hidden sm:inline-block">Gemini</span>
+              </div>
+            )}
           </div>
           
           <div className="flex items-center gap-2 mt-1 sm:mt-0">
+            {effectiveIsMobile && (
+              <Button variant="ghost" size="icon" className="sm:hidden h-7 w-7">
+                <Info className="h-3.5 w-3.5" />
+              </Button>
+            )}
+            
             <ExportMenu session={activeSession} />
             
             {activeSession && activeSession.messages.length > 0 && (
@@ -64,7 +79,7 @@ export default function ChatHeader({
                     return session;
                   }));
                 }}
-                className="text-xs h-8"
+                className="text-xs h-7 sm:h-8"
               >
                 Clear
               </Button>

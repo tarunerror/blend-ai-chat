@@ -21,3 +21,19 @@ export function useIsMobile() {
 
 // Add an alias for the hook to maintain compatibility
 export const useMobile = useIsMobile;
+
+// Add a CSS class to the root stylesheet
+document.addEventListener('DOMContentLoaded', () => {
+  const style = document.createElement('style');
+  style.innerHTML = `
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  `;
+  document.head.appendChild(style);
+});

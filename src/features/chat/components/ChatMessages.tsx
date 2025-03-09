@@ -9,6 +9,7 @@ interface ChatMessagesProps {
   thinkingText: string;
   isLoading: boolean;
   realTimeThinking?: string[];
+  streamingMessageId?: string;
 }
 
 export default function ChatMessages({ 
@@ -16,7 +17,8 @@ export default function ChatMessages({
   isThinking, 
   thinkingText, 
   isLoading,
-  realTimeThinking = []
+  realTimeThinking = [],
+  streamingMessageId
 }: ChatMessagesProps) {
   return (
     <>
@@ -25,6 +27,7 @@ export default function ChatMessages({
           key={msg.id}
           message={msg}
           isLast={i === messages.length - 1}
+          streaming={msg.id === streamingMessageId}
         />
       ))}
       
