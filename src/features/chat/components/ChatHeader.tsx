@@ -27,6 +27,11 @@ export default function ChatHeader({
 }: ChatHeaderProps) {
   const isMobileHook = useIsMobile();
   const effectiveIsMobile = isMobile || isMobileHook;
+  
+  // If sidebar is hidden and we're in mobile view, don't show the header content
+  if (!showSidebar && effectiveIsMobile) {
+    return null;
+  }
 
   return (
     <div className="p-2 sm:p-4 border-b border-border/50">

@@ -106,14 +106,16 @@ const ChatPage = () => {
             ${showSidebar ? 'translate-x-0 w-64' : '-translate-x-full w-0 md:w-0'} 
           `}
         >
-          <ChatSidebar
-            sessions={sessions}
-            activeSessionId={activeSessionId}
-            onNewSession={handleNewSession}
-            onSelectSession={handleSelectSessionAndCloseSidebar}
-            onDeleteSession={handleDeleteSession}
-            onShowArticles={handleShowArticles}
-          />
+          {showSidebar && (
+            <ChatSidebar
+              sessions={sessions}
+              activeSessionId={activeSessionId}
+              onNewSession={handleNewSession}
+              onSelectSession={handleSelectSessionAndCloseSidebar}
+              onDeleteSession={handleDeleteSession}
+              onShowArticles={handleShowArticles}
+            />
+          )}
         </div>
         
         {/* Main content - adjust with transition when sidebar state changes */}
