@@ -26,14 +26,20 @@ export default function ChatInput({ onSendMessage, isLoading }: ChatInputProps) 
   }, [message, isMobile]);
 
   const handleSendMessage = () => {
-    if (message.trim() && !isLoading) {
-      onSendMessage(message.trim());
+    const trimmedMessage = message.trim();
+    console.log("Trying to send message:", trimmedMessage, "isLoading:", isLoading);
+    
+    if (trimmedMessage && !isLoading) {
+      console.log("Sending message from input:", trimmedMessage);
+      onSendMessage(trimmedMessage);
       setMessage("");
       
       // Reset textarea height
       if (textareaRef.current) {
         textareaRef.current.style.height = "inherit";
       }
+    } else {
+      console.log("Not sending: empty message or loading state");
     }
   };
 
@@ -46,7 +52,13 @@ export default function ChatInput({ onSendMessage, isLoading }: ChatInputProps) 
 
   return (
     <div className="relative glass-card rounded-xl sm:rounded-2xl p-1 sm:p-2 transition-all duration-200">
-      <div className="flex items-end gap-1 sm:gap-2">
+      <form 
+        className="flex items-end gap-1 sm:gap-2"
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleSendMessage();
+        }}
+      >
         <Textarea
           ref={textareaRef}
           placeholder="Type a message..."
@@ -60,14 +72,13 @@ export default function ChatInput({ onSendMessage, isLoading }: ChatInputProps) 
           disabled={isLoading}
         />
         <Button
-          type="button"
+          type="submit"
           size="icon"
           className={cn(
             "mb-1 mr-1 h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-primary text-primary-foreground transition-all", 
             "hover:bg-primary/90",
             isLoading ? "opacity-50 cursor-not-allowed" : "hover-scale"
           )}
-          onClick={handleSendMessage}
           disabled={!message.trim() || isLoading}
         >
           {isLoading ? (
@@ -77,7 +88,7 @@ export default function ChatInput({ onSendMessage, isLoading }: ChatInputProps) 
           )}
           <span className="sr-only">Send message</span>
         </Button>
-      </div>
+      </form>
     </div>
   );
 }

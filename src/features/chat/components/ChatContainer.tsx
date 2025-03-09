@@ -1,5 +1,5 @@
 
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, useEffect } from 'react';
 import { v4 as uuidv4 } from "uuid";
 import { useToast } from "@/hooks/use-toast";
 import { ChatMessage as ChatMessageType, ChatSession } from "@/types/chat";
@@ -44,13 +44,29 @@ export default function ChatContainer({
 }: ChatContainerProps) {
   const { toast } = useToast();
 
+  // Log active session status for debugging
+  useEffect(() => {
+    console.log("Active session:", activeSessionId);
+    console.log("Sessions count:", sessions.length);
+  }, [activeSessionId, sessions]);
+
   const handleSendMessage = async (content: string) => {
-    if (!activeSessionId || !content.trim()) {
-      console.log("No active session or empty content");
+    if (!content.trim()) {
+      console.log("Empty content, not sending");
       return;
     }
 
-    console.log("Sending message:", content);
+    if (!activeSessionId) {
+      console.log("No active session, cannot send message");
+      toast({
+        title: "Error",
+        description: "No active chat session. Please create a new chat.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    console.log("Sending message:", content, "to session:", activeSessionId);
 
     const userMessage: ChatMessageType = {
       id: uuidv4(),
@@ -59,6 +75,7 @@ export default function ChatContainer({
       timestamp: Date.now(),
     };
 
+    // Update the session with the new message
     setSessions(prev => prev.map(session => {
       if (session.id === activeSessionId) {
         let updatedTitle = session.title;
@@ -81,8 +98,10 @@ export default function ChatContainer({
     setIsLoading(true);
     
     try {
+      // Start the thinking animation
       const finishThinking = await simulateThinking(content);
       
+      // Get the updated session after adding the user message
       const currentSession = sessions.find(session => session.id === activeSessionId);
       if (!currentSession) {
         console.error("Session not found after sending message");
@@ -105,7 +124,7 @@ export default function ChatContainer({
 
       console.log("Calling API with model:", selectedModel);
       const response = await sendChatRequest(recentMessages, apiKey, selectedModel);
-      console.log("API response received");
+      console.log("API response received:", response ? "success" : "empty");
 
       const assistantMessage: ChatMessageType = {
         id: uuidv4(),
@@ -115,16 +134,19 @@ export default function ChatContainer({
         timestamp: Date.now(),
       };
 
-      setSessions(prev => prev.map(session => {
-        if (session.id === activeSessionId) {
-          return {
-            ...session,
-            messages: [...session.messages, assistantMessage],
-            updatedAt: Date.now(),
-          };
-        }
-        return session;
-      }));
+      setSessions(prev => {
+        console.log("Updating sessions with AI response");
+        return prev.map(session => {
+          if (session.id === activeSessionId) {
+            return {
+              ...session,
+              messages: [...session.messages, assistantMessage],
+              updatedAt: Date.now(),
+            };
+          }
+          return session;
+        });
+      });
     } catch (error) {
       console.error("Error sending message:", error);
       setIsThinking(false);

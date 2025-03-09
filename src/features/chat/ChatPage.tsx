@@ -43,6 +43,14 @@ const ChatPage = () => {
     handleDeleteSession,
   } = useChatSessions();
 
+  // Create an initial session if none exists
+  useEffect(() => {
+    if (sessions.length === 0) {
+      console.log("No sessions found, creating a new one");
+      handleNewSession();
+    }
+  }, [sessions, handleNewSession]);
+
   const {
     isLoading,
     isThinking,
