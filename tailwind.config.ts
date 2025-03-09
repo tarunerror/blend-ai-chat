@@ -62,14 +62,6 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				},
-				// New cyberpunk-themed colors
-				neon: {
-					pink: '#ff00f7', 
-					blue: '#00eeff',
-					purple: '#9b3dff',
-					teal: '#00ffd0',
-					orange: '#ff7b00'
 				}
 			},
 			borderRadius: {
@@ -131,14 +123,6 @@ export default {
 					'25%': { borderRadius: '30% 60% 70% 40% / 50% 60% 30% 60%' },
 					'50%': { borderRadius: '40% 60% 30% 70% / 60% 40% 70% 30%' },
 					'75%': { borderRadius: '40% 60% 70% 30% / 30% 40% 70% 60%' }
-				},
-				'scan': {
-					'0%': { transform: 'translateY(0)' },
-					'100%': { transform: 'translateY(100%)' }
-				},
-				'flicker': {
-					'0%, 19.999%, 22%, 62.999%, 64%, 64.999%, 70%, 100%': { opacity: '1' },
-					'20%, 21.999%, 63%, 63.999%, 65%, 69.999%': { opacity: '0.33' }
 				}
 			},
 			animation: {
@@ -154,20 +138,15 @@ export default {
 				'float': 'float 6s ease-in-out infinite',
 				'wiggle': 'wiggle 2s ease-in-out infinite',
 				'gradual-rotate': 'gradual-rotate 12s linear infinite',
-				'blobs': 'blobs 10s linear infinite',
-				'scan': 'scan 2s linear infinite',
-				'flicker': 'flicker 2s linear infinite'
+				'blobs': 'blobs 10s linear infinite'
 			},
 			backgroundImage: {
 				'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-				'glass-gradient': 'linear-gradient(to right bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05))',
+				'glass-gradient': 'linear-gradient(to right bottom, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.3))',
 				'shimmer-gradient': 'linear-gradient(to right, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.1) 20%, rgba(0, 0, 0, 0.05) 40%)',
 				'purple-gradient': 'linear-gradient(135deg, #9b87f5 0%, #D946EF 100%)',
 				'sunset-gradient': 'linear-gradient(90deg, hsla(29, 92%, 70%, 1) 0%, hsla(0, 87%, 73%, 1) 100%)',
 				'aurora-gradient': 'linear-gradient(90deg, hsla(46, 73%, 75%, 1) 0%, hsla(176, 73%, 88%, 1) 100%)',
-				'cyberpunk-gradient': 'linear-gradient(135deg, #ff00f7 0%, #00eeff 100%)',
-				'neon-burst': 'radial-gradient(circle, #ff00f7 0%, #320c75 100%)',
-				'cityscape': 'url("lovable-uploads/d43cc6bd-01c6-45b2-8a08-0035115854bf.png")'
 			},
 			backdropFilter: {
 				'none': 'none',
