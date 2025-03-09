@@ -1,7 +1,7 @@
 
 import { ChatMessage } from "@/types/chat";
 
-// Updated list of free models on OpenRouter (with corrected Gemini model)
+// Updated list of free models on OpenRouter (with corrected models)
 export const AVAILABLE_MODELS: { id: string; name: string; provider: string; description: string; maxTokens: number; strengths?: string[] }[] = [
   {
     id: "nvidia/llama-3.1-nemotron-70b-instruct",
@@ -36,12 +36,12 @@ export const AVAILABLE_MODELS: { id: string; name: string; provider: string; des
     strengths: ["Multimodal understanding", "Language precision", "Visual comprehension"]
   },
   {
-    id: "cognitivecomputations/dolphin3.0-r1-mistral-24b",
-    name: "Dolphin 3.0",
-    provider: "CogComp",
-    description: "Advanced reasoning model with expanded capabilities",
+    id: "mistralai/mistral-7b-instruct",
+    name: "Mistral 7B",
+    provider: "Mistral AI",
+    description: "Efficient instruction-following model with strong reasoning",
     maxTokens: 8192,
-    strengths: ["Creativity", "Problem solving", "Detailed responses"]
+    strengths: ["Instruction following", "Balanced performance", "Efficient reasoning"]
   },
   {
     id: "deepseek/deepseek-r1",

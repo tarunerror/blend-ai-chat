@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/tooltip";
 import { Info } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { toast } from "sonner";
 
 interface ModelSelectorProps {
   selectedModel: string;
@@ -28,11 +29,14 @@ export default function ModelSelector({ selectedModel, onModelChange }: ModelSel
   const isMobile = useIsMobile();
   
   // Find the current model in available models or fallback to default
-  // If the selected model is no longer available, reset to default
   const currentModel = AVAILABLE_MODELS.find(model => model.id === selectedModel);
   
   // If current model is not found (might have been removed), reset to default
   if (!currentModel && selectedModel) {
+    // Only show a toast if we're actually changing models (not on initial load)
+    if (selectedModel) {
+      toast.error("Selected model is no longer available. Switched to default model.");
+    }
     onModelChange(DEFAULT_MODEL.id);
   }
   
