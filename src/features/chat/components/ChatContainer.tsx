@@ -1,3 +1,4 @@
+
 import { Dispatch, SetStateAction } from 'react';
 import { v4 as uuidv4 } from "uuid";
 import { useToast } from "@/hooks/use-toast";
@@ -44,9 +45,12 @@ export default function ChatContainer({
   const { toast } = useToast();
 
   const handleSendMessage = async (content: string) => {
-    if (!activeSessionId) {
+    if (!activeSessionId || !content.trim()) {
+      console.log("No active session or empty content");
       return;
     }
+
+    console.log("Sending message:", content);
 
     const userMessage: ChatMessageType = {
       id: uuidv4(),
@@ -81,6 +85,7 @@ export default function ChatContainer({
       
       const currentSession = sessions.find(session => session.id === activeSessionId);
       if (!currentSession) {
+        console.error("Session not found after sending message");
         await finishThinking();
         setIsThinking(false);
         setIsLoading(false);
@@ -98,7 +103,9 @@ export default function ChatContainer({
         throw new Error("API key not found");
       }
 
+      console.log("Calling API with model:", selectedModel);
       const response = await sendChatRequest(recentMessages, apiKey, selectedModel);
+      console.log("API response received");
 
       const assistantMessage: ChatMessageType = {
         id: uuidv4(),
