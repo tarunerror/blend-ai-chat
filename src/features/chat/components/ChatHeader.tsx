@@ -28,10 +28,8 @@ export default function ChatHeader({
   const isMobileHook = useIsMobile();
   const effectiveIsMobile = isMobile || isMobileHook;
   
-  // If sidebar is hidden and we're in mobile view, don't show the header content
-  if (!showSidebar && effectiveIsMobile) {
-    return null;
-  }
+  // Mobile headers should always be visible regardless of sidebar state
+  // We only want to hide the content when sidebar is open on mobile to avoid duplication
 
   return (
     <div className="p-2 sm:p-4 border-b border-border/50">
