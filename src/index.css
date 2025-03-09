@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -118,6 +117,16 @@
   ::-webkit-scrollbar-thumb:hover {
     @apply bg-primary/60;
   }
+  
+  /* Hide scrollbar for specific elements */
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .hide-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
 }
 
 /* Glass Card Effect */
@@ -195,6 +204,25 @@
     .mobile-gap-1 {
       @apply gap-1;
     }
+  }
+
+  /* Article card styling */
+  .article-card {
+    @apply bg-card border border-border/50 rounded-lg overflow-hidden transition-all duration-200
+           hover:shadow-md hover:border-primary/20;
+  }
+  
+  .article-image {
+    @apply aspect-video w-full object-cover transition-transform duration-300;
+  }
+  
+  .article-card:hover .article-image {
+    @apply scale-105;
+  }
+  
+  .article-badge {
+    @apply absolute top-2 right-2 bg-background/80 backdrop-blur-sm
+           text-xs px-2 py-1 rounded-full shadow-sm;
   }
 }
 

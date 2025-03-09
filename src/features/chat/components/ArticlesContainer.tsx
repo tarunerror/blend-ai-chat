@@ -1,5 +1,6 @@
 
 import Articles from "@/components/Articles";
+import { Newspaper } from "lucide-react";
 
 interface ArticlesContainerProps {
   onClose: () => void;

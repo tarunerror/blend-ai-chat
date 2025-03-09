@@ -1,11 +1,12 @@
 
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Clock, Tag, User, X, Code, BookOpen, ArrowUpRight, MessageSquare, Filter } from "lucide-react";
+import { Clock, Tag, User, X, Code, BookOpen, ArrowUpRight, MessageSquare, Filter, Zap, BookOpenText, ScrollText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "@/hooks/use-toast";
 import { Article } from "@/types/chat";
 import { cn } from "@/lib/utils";
@@ -15,11 +16,12 @@ interface ArticlesProps {
   onClose: () => void;
 }
 
-async function fetchArticles(): Promise<Article[]> {
-  const response = await fetch("https://dev.to/api/articles?top=15");
+async function fetchArticles(type: 'top' | 'latest'): Promise<Article[]> {
+  const endpoint = type === 'top' ? "https://dev.to/api/articles?top=15" : "https://dev.to/api/articles?state=fresh&per_page=15";
+  const response = await fetch(endpoint);
   
   if (!response.ok) {
-    throw new Error("Failed to fetch articles");
+    throw new Error(`Failed to fetch ${type} articles`);
   }
   
   const data = await response.json();
@@ -36,7 +38,7 @@ async function fetchArticles(): Promise<Article[]> {
       name: article.user.name,
       profileImage: article.user.profile_image || `https://ui-avatars.com/api/?name=${encodeURIComponent(article.user.name)}&background=random`,
     },
-    tags: article.tags,
+    tags: article.tags ? article.tags.split(", ") : [],
   }));
 }
 
@@ -44,15 +46,35 @@ export default function Articles({ onClose }: ArticlesProps) {
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [allTags, setAllTags] = useState<string[]>([]);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [activeTab, setActiveTab] = useState<'trending' | 'latest'>('trending');
   
-  const { data: articles, isLoading, error } = useQuery({
-    queryKey: ["articles"],
-    queryFn: fetchArticles,
+  const { 
+    data: trendingArticles, 
+    isLoading: isTrendingLoading, 
+    error: trendingError 
+  } = useQuery({
+    queryKey: ["articles", "trending"],
+    queryFn: () => fetchArticles('top'),
   });
+  
+  const { 
+    data: latestArticles, 
+    isLoading: isLatestLoading, 
+    error: latestError 
+  } = useQuery({
+    queryKey: ["articles", "latest"],
+    queryFn: () => fetchArticles('latest'),
+  });
+  
+  const articles = activeTab === 'trending' ? trendingArticles : latestArticles;
+  const isLoading = activeTab === 'trending' ? isTrendingLoading : isLatestLoading;
+  const error = activeTab === 'trending' ? trendingError : latestError;
   
   useEffect(() => {
     if (articles) {
-      const tags = Array.from(new Set(articles.flatMap(article => article.tags)));
+      const tags = Array.from(
+        new Set(articles.flatMap(article => article.tags))
+      ).filter(Boolean);
       setAllTags(tags);
     }
   }, [articles]);
@@ -70,7 +92,7 @@ export default function Articles({ onClose }: ArticlesProps) {
   }
   
   return (
-    <div className="flex flex-col h-full bg-background rounded-lg border border-border animate-fade-in">
+    <div className="flex flex-col h-full bg-background rounded-lg border border-border animate-fade-in shadow-lg">
       <div className="p-4 flex items-center justify-between sticky top-0 bg-background border-b border-border z-10">
         <div className="flex items-center gap-2">
           <BookOpen className="h-5 w-5 text-primary" />
@@ -110,76 +132,125 @@ export default function Articles({ onClose }: ArticlesProps) {
         </div>
       </div>
       
-      <div className="p-4 border-b border-border overflow-x-auto">
-        <div className="flex gap-2 items-center">
-          <Filter className="h-4 w-4 text-muted-foreground" />
-          <Button
-            variant={selectedTag === null ? "default" : "outline"}
-            size="sm"
-            className="text-xs"
-            onClick={() => setSelectedTag(null)}
-          >
-            All Topics
-          </Button>
-          
-          {allTags.slice(0, 10).map(tag => (
-            <Button
-              key={tag}
-              variant={selectedTag === tag ? "default" : "outline"}
-              size="sm"
-              className="text-xs"
-              onClick={() => setSelectedTag(tag)}
-            >
-              {tag}
-            </Button>
-          ))}
+      <Tabs 
+        defaultValue="trending" 
+        className="w-full" 
+        onValueChange={(value) => setActiveTab(value as 'trending' | 'latest')}
+      >
+        <div className="px-4 pt-2">
+          <TabsList className="w-full mb-2">
+            <TabsTrigger value="trending" className="flex items-center gap-1 flex-1">
+              <Zap className="h-3.5 w-3.5" />
+              <span>Trending</span>
+            </TabsTrigger>
+            <TabsTrigger value="latest" className="flex items-center gap-1 flex-1">
+              <ScrollText className="h-3.5 w-3.5" />
+              <span>Latest</span>
+            </TabsTrigger>
+          </TabsList>
         </div>
-      </div>
-      
-      <ScrollArea className="flex-1">
-        {viewMode === 'grid' ? (
-          <div className="p-4 grid grid-cols-1 md:grid-cols-2 gap-6">
-            {isLoading ? (
-              // Loading skeletons for grid view
-              Array.from({ length: 6 }).map((_, i) => (
-                <div key={i} className="space-y-2">
+        
+        <div className="px-4 py-2 border-b border-border overflow-x-auto">
+          <div className="flex gap-2 items-center">
+            <Filter className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+            <Button
+              variant={selectedTag === null ? "default" : "outline"}
+              size="sm"
+              className="text-xs flex-shrink-0"
+              onClick={() => setSelectedTag(null)}
+            >
+              All Topics
+            </Button>
+            
+            <div className="flex gap-2 items-center overflow-x-auto pb-1 hide-scrollbar">
+              {allTags.slice(0, 15).map(tag => (
+                <Button
+                  key={tag}
+                  variant={selectedTag === tag ? "default" : "outline"}
+                  size="sm"
+                  className="text-xs flex-shrink-0"
+                  onClick={() => setSelectedTag(tag)}
+                >
+                  {tag}
+                </Button>
+              ))}
+            </div>
+          </div>
+        </div>
+        
+        <TabsContent value="trending" className="flex-1 m-0">
+          <ArticlesList 
+            articles={filteredArticles} 
+            isLoading={isLoading} 
+            viewMode={viewMode} 
+          />
+        </TabsContent>
+        
+        <TabsContent value="latest" className="flex-1 m-0">
+          <ArticlesList 
+            articles={filteredArticles} 
+            isLoading={isLoading} 
+            viewMode={viewMode} 
+          />
+        </TabsContent>
+      </Tabs>
+    </div>
+  );
+}
+
+function ArticlesList({ 
+  articles, 
+  isLoading, 
+  viewMode 
+}: { 
+  articles?: Article[], 
+  isLoading: boolean, 
+  viewMode: 'grid' | 'list' 
+}) {
+  return (
+    <ScrollArea className="flex-1">
+      {viewMode === 'grid' ? (
+        <div className="p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {isLoading ? (
+            // Loading skeletons for grid view
+            Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="space-y-2">
+                <Skeleton className="h-4 w-3/4" />
+                <Skeleton className="h-3 w-1/2" />
+                <Skeleton className="h-32 w-full rounded-lg" />
+              </div>
+            ))
+          ) : (
+            articles?.map(article => (
+              <ArticleCard key={article.id} article={article} view="grid" />
+            ))
+          )}
+        </div>
+      ) : (
+        <div className="p-4 space-y-4">
+          {isLoading ? (
+            // Loading skeletons for list view
+            Array.from({ length: 5 }).map((_, i) => (
+              <div key={i} className="flex gap-4">
+                <Skeleton className="h-16 w-16 rounded-md flex-shrink-0" />
+                <div className="space-y-2 flex-1">
                   <Skeleton className="h-4 w-3/4" />
                   <Skeleton className="h-3 w-1/2" />
-                  <Skeleton className="h-32 w-full rounded-lg" />
-                </div>
-              ))
-            ) : (
-              filteredArticles?.map(article => (
-                <ArticleCard key={article.id} article={article} view="grid" />
-              ))
-            )}
-          </div>
-        ) : (
-          <div className="p-4 space-y-4">
-            {isLoading ? (
-              // Loading skeletons for list view
-              Array.from({ length: 5 }).map((_, i) => (
-                <div key={i} className="flex gap-4">
-                  <Skeleton className="h-16 w-16 rounded-md flex-shrink-0" />
-                  <div className="space-y-2 flex-1">
-                    <Skeleton className="h-4 w-3/4" />
-                    <Skeleton className="h-3 w-1/2" />
-                    <div className="flex gap-2">
-                      <Skeleton className="h-3 w-16" />
-                      <Skeleton className="h-3 w-16" />
-                    </div>
+                  <div className="flex gap-2">
+                    <Skeleton className="h-3 w-16" />
+                    <Skeleton className="h-3 w-16" />
                   </div>
                 </div>
-              ))
-            ) : (
-              filteredArticles?.map(article => (
-                <ArticleCard key={article.id} article={article} view="list" />
-              ))
-            )}
-          </div>
-        )}
-      </ScrollArea>
-    </div>
+              </div>
+            ))
+          ) : (
+            articles?.map(article => (
+              <ArticleCard key={article.id} article={article} view="list" />
+            ))
+          )}
+        </div>
+      )}
+    </ScrollArea>
   );
 }
 
@@ -252,8 +323,8 @@ function ArticleCard({ article, view }: { article: Article; view: 'grid' | 'list
       rel="noopener noreferrer"
       className="block group"
     >
-      <div className="space-y-3 hover-scale">
-        <div className="aspect-video overflow-hidden rounded-lg relative">
+      <div className="space-y-3 hover-scale bg-background rounded-lg border border-border/50 overflow-hidden shadow-sm hover:shadow-md transition-all">
+        <div className="aspect-video overflow-hidden relative">
           <img 
             src={article.coverImage} 
             alt={article.title}
@@ -270,7 +341,7 @@ function ArticleCard({ article, view }: { article: Article; view: 'grid' | 'list
           </div>
         </div>
         
-        <div>
+        <div className="p-4">
           <div className="flex items-center gap-2 mb-1">
             <div className="w-5 h-5 rounded-full overflow-hidden">
               <img 
@@ -315,8 +386,6 @@ function ArticleCard({ article, view }: { article: Article; view: 'grid' | 'list
           </div>
         </div>
       </div>
-      
-      <Separator className="mt-6" />
     </a>
   );
 }
