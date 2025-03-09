@@ -55,10 +55,38 @@ const ChatPage = () => {
     isLoading,
     isThinking,
     thinkingText,
+    realTimeThinking,
     simulateThinking,
     setIsLoading,
     setIsThinking,
   } = useThinking();
+
+  // Make real-time thinking available globally for debugging and integration
+  useEffect(() => {
+    // Expose real-time thinking to window for debugging and integration
+    (window as any).__realTimeThinking = realTimeThinking;
+    
+    // Add a setter method for other components to update it
+    if (!(window as any).__setRealTimeThinking) {
+      const subscribers: ((thoughts: string[]) => void)[] = [];
+      
+      (window as any).__setRealTimeThinking = (thoughts: string[]) => {
+        (window as any).__realTimeThinking = thoughts;
+        subscribers.forEach(callback => callback(thoughts));
+      };
+      
+      (window as any).__subscribeToRealTimeThinking = (callback: (thoughts: string[]) => void) => {
+        subscribers.push(callback);
+        // Return unsubscribe function
+        return () => {
+          const index = subscribers.indexOf(callback);
+          if (index !== -1) {
+            subscribers.splice(index, 1);
+          }
+        };
+      };
+    }
+  }, [realTimeThinking]);
 
   // Check for API key on load
   useEffect(() => {

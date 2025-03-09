@@ -44,11 +44,25 @@ export default function ChatContainer({
 }: ChatContainerProps) {
   const { toast } = useToast();
 
+  // Get realTimeThinking from the useThinking hook in ChatPage
+  // Since we don't have direct access to it, we'll get it through props in a future update
+  // For now, we'll just forward whatever we have
+  const realTimeThinking = (window as any).__realTimeThinking || [];
+
   // Log active session status for debugging
   useEffect(() => {
     console.log("Active session:", activeSessionId);
     console.log("Sessions count:", sessions.length);
   }, [activeSessionId, sessions]);
+
+  // Expose realTimeThinking to window for debugging
+  useEffect(() => {
+    if ((window as any).__setRealTimeThinking) {
+      (window as any).__subscribeToRealTimeThinking((thoughts: string[]) => {
+        console.log("Real-time thinking updated:", thoughts);
+      });
+    }
+  }, []);
 
   const handleSendMessage = async (content: string) => {
     if (!content.trim()) {
@@ -186,6 +200,7 @@ export default function ChatContainer({
               isThinking={isThinking}
               thinkingText={thinkingText}
               isLoading={isLoading}
+              realTimeThinking={realTimeThinking}
             />
           )}
         </div>

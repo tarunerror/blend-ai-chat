@@ -76,3 +76,23 @@
   background: linear-gradient(135deg, #9b87f5 0%, #D946EF 100%);
   opacity: 0.6;
 }
+
+/* Animation for real-time thinking */
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out forwards;
+}
+
+.thinking-line {
+  animation: thinking-pulse 2s infinite;
+}
+
+@keyframes thinking-pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 0.8; }
+}
+
