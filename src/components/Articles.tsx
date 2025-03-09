@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Clock, Tag, User, X, Code, BookOpen, ArrowUpRight, MessageSquare, Filter, Zap, ScrollText } from "lucide-react";
@@ -150,16 +149,15 @@ export default function Articles({ onClose }: ArticlesProps) {
           </TabsList>
         </div>
         
-        {/* Fix the topics filter section to be visible on all screen sizes */}
         <div className="px-4 py-2 border-b border-border">
           <div className="flex items-center gap-2">
             <Filter className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-            <ScrollArea className="w-full" orientation="horizontal">
+            <div className="w-full overflow-x-auto topic-buttons-container">
               <div className="flex gap-2 items-center pb-1 pr-4">
                 <Button
                   variant={selectedTag === null ? "default" : "outline"}
                   size="sm"
-                  className="text-xs flex-shrink-0"
+                  className="text-xs flex-shrink-0 topic-button"
                   onClick={() => setSelectedTag(null)}
                 >
                   All Topics
@@ -170,14 +168,14 @@ export default function Articles({ onClose }: ArticlesProps) {
                     key={tag}
                     variant={selectedTag === tag ? "default" : "outline"}
                     size="sm"
-                    className="text-xs flex-shrink-0 whitespace-nowrap"
+                    className="text-xs flex-shrink-0 whitespace-nowrap topic-button"
                     onClick={() => setSelectedTag(tag)}
                   >
                     {tag}
                   </Button>
                 ))}
               </div>
-            </ScrollArea>
+            </div>
           </div>
         </div>
         
@@ -215,7 +213,6 @@ function ArticlesList({
       {viewMode === 'grid' ? (
         <div className="p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {isLoading ? (
-            // Loading skeletons for grid view
             Array.from({ length: 6 }).map((_, i) => (
               <div key={i} className="space-y-2">
                 <Skeleton className="h-4 w-3/4" />
@@ -232,7 +229,6 @@ function ArticlesList({
       ) : (
         <div className="p-4 space-y-4">
           {isLoading ? (
-            // Loading skeletons for list view
             Array.from({ length: 5 }).map((_, i) => (
               <div key={i} className="flex gap-4">
                 <Skeleton className="h-16 w-16 rounded-md flex-shrink-0" />
