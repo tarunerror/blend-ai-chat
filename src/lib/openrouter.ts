@@ -36,12 +36,12 @@ export const AVAILABLE_MODELS: { id: string; name: string; provider: string; des
     strengths: ["Multimodal understanding", "Language precision", "Visual comprehension"]
   },
   {
-    id: "mistralai/mistral-7b-instruct",
-    name: "Mistral 7B",
-    provider: "Mistral AI",
-    description: "Efficient instruction-following model with strong reasoning",
+    id: "cognitivecomputations/dolphin-mixtral-8x22b",
+    name: "Dolphin Mixtral",
+    provider: "CogComp",
+    description: "Large mixtral-based model with enhanced reasoning capabilities",
     maxTokens: 8192,
-    strengths: ["Instruction following", "Balanced performance", "Efficient reasoning"]
+    strengths: ["Creative writing", "Detailed responses", "Advanced reasoning"]
   },
   {
     id: "deepseek/deepseek-r1",
