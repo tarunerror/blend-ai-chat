@@ -96,3 +96,126 @@
   50% { opacity: 0.8; }
 }
 
+/* New animated background patterns */
+.animated-bg {
+  background-size: 300% 300%;
+  background-image: linear-gradient(
+    -45deg, 
+    rgba(155, 135, 245, 0.1) 0%, 
+    rgba(217, 70, 239, 0.1) 25%, 
+    rgba(155, 135, 245, 0.1) 51%, 
+    rgba(217, 70, 239, 0.1) 100%
+  );
+  animation: AnimateBG 15s ease infinite;
+}
+
+.animated-circles {
+  position: relative;
+  overflow: hidden;
+}
+
+.animated-circles::before,
+.animated-circles::after {
+  content: '';
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: rgba(155, 135, 245, 0.05);
+  z-index: -1;
+}
+
+.animated-circles::before {
+  top: -300px;
+  right: -300px;
+  animation: circle-float 20s ease-in-out infinite alternate;
+}
+
+.animated-circles::after {
+  bottom: -300px;
+  left: -300px;
+  animation: circle-float 15s ease-in-out 2s infinite alternate;
+  background: rgba(217, 70, 239, 0.05);
+}
+
+@keyframes AnimateBG { 
+  0% { background-position: 0% 50% }
+  50% { background-position: 100% 50% }
+  100% { background-position: 0% 50% }
+}
+
+@keyframes circle-float {
+  0% { transform: translate(0, 0); }
+  50% { transform: translate(100px, 50px); }
+  100% { transform: translate(0, 0); }
+}
+
+/* Enhanced message styling */
+.message-card {
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+}
+
+.message-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  border-color: rgba(155, 135, 245, 0.3);
+}
+
+.user-message {
+  background: linear-gradient(135deg, rgba(155, 135, 245, 0.1) 0%, rgba(155, 135, 245, 0.05) 100%);
+  border-left: 3px solid rgba(155, 135, 245, 0.5);
+}
+
+.assistant-message {
+  background: linear-gradient(135deg, rgba(217, 70, 239, 0.1) 0%, rgba(217, 70, 239, 0.05) 100%);
+  border-left: 3px solid rgba(217, 70, 239, 0.5);
+}
+
+/* Floating animation */
+.float-animation {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+  100% { transform: translateY(0); }
+}
+
+/* Shimmering effect */
+.shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg, 
+    transparent, 
+    rgba(255, 255, 255, 0.2), 
+    transparent
+  );
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% { left: -100%; }
+  100% { left: 200%; }
+}
+
+/* Pulse animation */
+.pulse-animation {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
