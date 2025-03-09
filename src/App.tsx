@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ChatPage } from "./features/chat";
 import NotFound from "./pages/NotFound";
+import DiscoBall from "./components/DiscoBall";
 
 // Create a client
 const queryClient = new QueryClient({
@@ -29,6 +30,9 @@ const App = () => (
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
+      
+      {/* Floating disco ball in the center of the screen, mimicking the image */}
+      <DiscoBall size="lg" position="center" className="opacity-70" />
     </TooltipProvider>
   </QueryClientProvider>
 );

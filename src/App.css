@@ -1,3 +1,4 @@
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -11,10 +12,10 @@
   transition: filter 300ms;
 }
 .logo:hover {
-  filter: drop-shadow(0 0 2em #9b87f5aa);
+  filter: drop-shadow(0 0 2em #ff00f7aa);
 }
 .logo.react:hover {
-  filter: drop-shadow(0 0 2em #D946EFaa);
+  filter: drop-shadow(0 0 2em #00eeffaa);
 }
 
 @keyframes logo-spin {
@@ -53,12 +54,12 @@
 
 .effect-3d {
   transform-style: preserve-3d;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1), 
-              0 -4px 12px rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2), 
+              0 -4px 12px rgba(255, 0, 247, 0.1);
 }
 
 .shadow-glow {
-  box-shadow: 0 0 15px 1px rgba(155, 135, 245, 0.4);
+  box-shadow: 0 0 15px 1px rgba(255, 0, 247, 0.4);
 }
 
 .gradient-border {
@@ -72,7 +73,7 @@
   inset: -2px;
   z-index: -1;
   border-radius: 0.85rem;
-  background: linear-gradient(135deg, #9b87f5 0%, #D946EF 100%);
+  background: linear-gradient(135deg, #ff00f7 0%, #00eeff 100%);
   opacity: 0.6;
 }
 
@@ -100,10 +101,10 @@
   background-size: 300% 300%;
   background-image: linear-gradient(
     -45deg, 
-    rgba(155, 135, 245, 0.1) 0%, 
-    rgba(217, 70, 239, 0.1) 25%, 
-    rgba(155, 135, 245, 0.1) 51%, 
-    rgba(217, 70, 239, 0.1) 100%
+    rgba(255, 0, 247, 0.1) 0%, 
+    rgba(0, 238, 255, 0.1) 25%, 
+    rgba(255, 0, 247, 0.1) 51%, 
+    rgba(0, 238, 255, 0.1) 100%
   );
   animation: AnimateBG 15s ease infinite;
 }
@@ -120,7 +121,7 @@
   width: 600px;
   height: 600px;
   border-radius: 50%;
-  background: rgba(155, 135, 245, 0.05);
+  background: rgba(255, 0, 247, 0.05);
   z-index: -1;
 }
 
@@ -134,7 +135,7 @@
   bottom: -300px;
   left: -300px;
   animation: circle-float 15s ease-in-out 2s infinite alternate;
-  background: rgba(217, 70, 239, 0.05);
+  background: rgba(0, 238, 255, 0.05);
 }
 
 @keyframes AnimateBG { 
@@ -158,17 +159,17 @@
 .message-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-  border-color: rgba(155, 135, 245, 0.3);
+  border-color: rgba(255, 0, 247, 0.3);
 }
 
 .user-message {
-  background: linear-gradient(135deg, rgba(155, 135, 245, 0.1) 0%, rgba(155, 135, 245, 0.05) 100%);
-  border-left: 3px solid rgba(155, 135, 245, 0.5);
+  background: linear-gradient(135deg, rgba(255, 0, 247, 0.1) 0%, rgba(255, 0, 247, 0.05) 100%);
+  border-left: 3px solid rgba(255, 0, 247, 0.5);
 }
 
 .assistant-message {
-  background: linear-gradient(135deg, rgba(217, 70, 239, 0.1) 0%, rgba(217, 70, 239, 0.05) 100%);
-  border-left: 3px solid rgba(217, 70, 239, 0.5);
+  background: linear-gradient(135deg, rgba(0, 238, 255, 0.1) 0%, rgba(0, 238, 255, 0.05) 100%);
+  border-left: 3px solid rgba(0, 238, 255, 0.5);
 }
 
 /* Floating animation */
@@ -233,7 +234,7 @@
 }
 
 .topic-buttons-container::-webkit-scrollbar-thumb {
-  background-color: rgba(155, 135, 245, 0.3);
+  background-color: rgba(255, 0, 247, 0.3);
   border-radius: 4px;
 }
 
@@ -245,4 +246,71 @@
 .topic-button {
   flex-shrink: 0;
   white-space: nowrap;
+}
+
+/* Cyberpunk-specific effects */
+.neon-text-primary {
+  color: #ff00f7;
+  text-shadow: 0 0 5px #ff00f7, 0 0 10px #ff00f7, 0 0 15px #ff00f7;
+}
+
+.neon-text-secondary {
+  color: #00eeff;
+  text-shadow: 0 0 5px #00eeff, 0 0 10px #00eeff, 0 0 15px #00eeff;
+}
+
+.neon-border-primary {
+  border: 1px solid #ff00f7;
+  box-shadow: 0 0 5px #ff00f7, 0 0 10px #ff00f7;
+}
+
+.neon-border-secondary {
+  border: 1px solid #00eeff;
+  box-shadow: 0 0 5px #00eeff, 0 0 10px #00eeff;
+}
+
+.neon-glow-primary {
+  filter: drop-shadow(0 0 2px #ff00f7) drop-shadow(0 0 4px #ff00f7);
+}
+
+.neon-glow-secondary {
+  filter: drop-shadow(0 0 2px #00eeff) drop-shadow(0 0 4px #00eeff);
+}
+
+/* Disco ball effect similar to the image */
+.disco-ball-container {
+  position: relative;
+}
+
+.disco-ball {
+  width: 100px;
+  height: 100px;
+  background: radial-gradient(circle at 30% 30%, #ffffff, #00eeff 20%, #ff00f7 35%, #242435 60%);
+  border-radius: 50%;
+  box-shadow: 0 0 20px 5px rgba(255, 0, 247, 0.5), 0 0 40px 10px rgba(0, 238, 255, 0.3);
+  animation: disco-spin 10s linear infinite, disco-pulse 3s ease-in-out infinite;
+}
+
+@keyframes disco-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Scanner effect inspired by cyberpunk/sci-fi interfaces */
+.scanner-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #00eeff;
+  box-shadow: 0 0 10px 3px #00eeff;
+  opacity: 0.7;
+  z-index: 10;
+  animation: scan-line 3s linear infinite;
+}
+
+@keyframes scan-line {
+  0% { top: 0; }
+  100% { top: 100%; }
 }

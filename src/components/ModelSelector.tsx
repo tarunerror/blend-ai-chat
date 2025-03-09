@@ -48,16 +48,16 @@ export default function ModelSelector({ selectedModel, onModelChange }: ModelSel
         value={currentModel ? selectedModel : DEFAULT_MODEL.id} 
         onValueChange={onModelChange}
       >
-        <SelectTrigger className="w-full bg-background border-border/50 focus:ring-primary/20 text-sm">
+        <SelectTrigger className="w-full bg-background/60 border-primary/30 focus:ring-primary/20 text-sm neon-border-primary">
           <SelectValue placeholder="Select a model" />
         </SelectTrigger>
-        <SelectContent className="glass-card">
+        <SelectContent className="glass-card border-primary/30 shadow-lg">
           <SelectGroup>
             {AVAILABLE_MODELS.map((model) => (
               <SelectItem
                 key={model.id}
                 value={model.id}
-                className="flex flex-col items-start text-sm"
+                className="flex flex-col items-start text-sm hover:bg-primary/10 data-[state=checked]:bg-primary/20"
                 onMouseEnter={() => setHoveredModel(model.id)}
                 onMouseLeave={() => setHoveredModel(null)}
               >
@@ -74,18 +74,18 @@ export default function ModelSelector({ selectedModel, onModelChange }: ModelSel
       </Select>
       
       <div className="mt-1 text-xs text-muted-foreground flex items-center gap-1">
-        <span>{isMobile ? modelToDisplay.name.split(' ')[0] : modelToDisplay.provider}</span>
+        <span className="text-neon-blue">{isMobile ? modelToDisplay.name.split(' ')[0] : modelToDisplay.provider}</span>
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Info className="h-3 w-3 cursor-help" />
+              <Info className="h-3 w-3 cursor-help text-neon-pink" />
             </TooltipTrigger>
-            <TooltipContent className="max-w-xs p-3 space-y-2">
-              <p className="font-medium">{modelToDisplay.name}</p>
+            <TooltipContent className="max-w-xs p-3 space-y-2 bg-background/90 backdrop-blur-lg border border-primary/30">
+              <p className="font-medium gradient-text">{modelToDisplay.name}</p>
               <p className="text-xs">{modelToDisplay.description}</p>
               {modelToDisplay.strengths && (
                 <div>
-                  <p className="font-medium text-xs mt-1">Strengths:</p>
+                  <p className="font-medium text-xs mt-1 text-neon-blue">Strengths:</p>
                   <ul className="text-xs list-disc pl-4 space-y-0.5 mt-1">
                     {modelToDisplay.strengths.map((strength, i) => (
                       <li key={i}>{strength}</li>
