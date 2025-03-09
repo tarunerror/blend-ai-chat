@@ -1,7 +1,7 @@
 
 import { ChatMessage } from "@/types/chat";
 
-// Updated list of free models on OpenRouter
+// Updated list of free models on OpenRouter (removed unavailable model)
 export const AVAILABLE_MODELS: { id: string; name: string; provider: string; description: string; maxTokens: number; strengths?: string[] }[] = [
   {
     id: "nvidia/llama-3.1-nemotron-70b-instruct",
@@ -12,8 +12,8 @@ export const AVAILABLE_MODELS: { id: string; name: string; provider: string; des
     strengths: ["Context understanding", "Complex reasoning", "Knowledge depth"]
   },
   {
-    id: "google/gemini-2.0-flash-exp",
-    name: "Gemini 2.0 Flash",
+    id: "google/gemini-1.5-flash",
+    name: "Gemini 1.5 Flash",
     provider: "Google",
     description: "Fast and efficient model with broad capabilities",
     maxTokens: 8192,
