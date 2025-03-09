@@ -1,7 +1,7 @@
 
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Clock, Tag, User, X, Code, BookOpen, ArrowUpRight, MessageSquare, Filter, Zap, BookOpenText, ScrollText } from "lucide-react";
+import { Clock, Tag, User, X, Code, BookOpen, ArrowUpRight, MessageSquare, Filter, Zap, ScrollText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -150,31 +150,34 @@ export default function Articles({ onClose }: ArticlesProps) {
           </TabsList>
         </div>
         
-        <div className="px-4 py-2 border-b border-border overflow-x-auto">
-          <div className="flex gap-2 items-center">
+        {/* Fix the topics filter section to be visible on all screen sizes */}
+        <div className="px-4 py-2 border-b border-border">
+          <div className="flex items-center gap-2">
             <Filter className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-            <Button
-              variant={selectedTag === null ? "default" : "outline"}
-              size="sm"
-              className="text-xs flex-shrink-0"
-              onClick={() => setSelectedTag(null)}
-            >
-              All Topics
-            </Button>
-            
-            <div className="flex gap-2 items-center overflow-x-auto pb-1 hide-scrollbar">
-              {allTags.slice(0, 15).map(tag => (
+            <ScrollArea className="w-full" orientation="horizontal">
+              <div className="flex gap-2 items-center pb-1 pr-4">
                 <Button
-                  key={tag}
-                  variant={selectedTag === tag ? "default" : "outline"}
+                  variant={selectedTag === null ? "default" : "outline"}
                   size="sm"
                   className="text-xs flex-shrink-0"
-                  onClick={() => setSelectedTag(tag)}
+                  onClick={() => setSelectedTag(null)}
                 >
-                  {tag}
+                  All Topics
                 </Button>
-              ))}
-            </div>
+                
+                {allTags.slice(0, 15).map(tag => (
+                  <Button
+                    key={tag}
+                    variant={selectedTag === tag ? "default" : "outline"}
+                    size="sm"
+                    className="text-xs flex-shrink-0 whitespace-nowrap"
+                    onClick={() => setSelectedTag(tag)}
+                  >
+                    {tag}
+                  </Button>
+                ))}
+              </div>
+            </ScrollArea>
           </div>
         </div>
         
